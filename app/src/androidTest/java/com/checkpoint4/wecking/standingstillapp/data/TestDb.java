@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
 
-import com.checkpoint4.wecking.standingstillapp.StandingContract;
 
 import java.util.HashSet;
 

@@ -10,7 +10,6 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.test.AndroidTestCase;
 
-import com.checkpoint4.wecking.standingstillapp.StandingContract;
 
 import java.util.Map;
 import java.util.Set;
