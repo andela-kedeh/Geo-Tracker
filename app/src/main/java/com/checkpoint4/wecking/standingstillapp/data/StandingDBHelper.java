@@ -4,8 +4,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.checkpoint4.wecking.standingstillapp.StandingContract;
-
 /**
  * Created by andela on 10/6/15.
  */
