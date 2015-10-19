@@ -39,9 +39,10 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:background="@color/colorPrimary"
-            android:minHeight="?attr/actionBarSize">
+            android:minHeight="?attr/actionBarSize"
+            android:layout_marginTop="10dp">
 
             <ImageView
                 android:id="@+id/view_headline"
@@ -66,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:layout_marginRight="20dp"
-                android:src="@drawable/format_list_numbers" />
+                android:src="@drawable/ic_more_vert_white_24dp" />
 
         </android.support.v7.widget.Toolbar>
 
@@ -74,9 +75,10 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:background="@color/colorPrimary"
-            android:minHeight="?attr/actionBarSize">
+            android:minHeight="?attr/actionBarSize"
+            android:layout_marginTop="5dp">
 
             <ImageView
                 android:id="@+id/date_picker"
