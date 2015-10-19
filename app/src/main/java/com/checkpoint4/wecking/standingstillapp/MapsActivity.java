@@ -1,15 +1,27 @@
 package com.checkpoint4.wecking.standingstillapp;
 
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.database.Cursor;
+import android.os.Build;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.checkpoint4.wecking.standingstillapp.Location.StandingService;
+import com.checkpoint4.wecking.standingstillapp.data.StandingContract;
+import com.checkpoint4.wecking.standingstillapp.model.Location;
 import com.checkpoint4.wecking.standingstillapp.util.CustomTimePickerDialog;
+import com.checkpoint4.wecking.standingstillapp.util.Formater;
 import com.checkpoint4.wecking.standingstillapp.util.SelectDateFragment;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -23,6 +35,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
+import java.util.Date;
 
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, View.OnClickListener {
@@ -33,15 +46,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ImageView playAndStop;
     private ImageView clock;
     private TextView dateSet;
+    private DrawerLayout mDrawerLayout;
+    private ImageView headline;
+    private Location location;
+    private String viewMapDate = Formater.formatDate(new Date().getTime());
+    private SupportMapFragment mapFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+        setContentView(R.layout.activity_main);
+        setVersionLayout();
         initialize();
     }
 
+
     public void initialize(){
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         playAndStop = (ImageView) findViewById(R.id.play);
         playAndStop.setOnClickListener(this);
         clock = (ImageView) findViewById(R.id.clock);
@@ -49,9 +70,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         ImageView datePicker = (ImageView) findViewById(R.id.date_picker);
         datePicker.setOnClickListener(this);
         dateSet = (TextView) findViewById(R.id.date);
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        dateSet.setText(new Date().toString());
+        mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        headline = (ImageView) findViewById(R.id.view_headline);
+        headline.setOnClickListener(this);
+        location = new Location(this);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        if (navigationView != null) {
+            setupDrawerContent(navigationView);
+        }
+    }
+
+    private void setVersionLayout(){
+        if(Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP_MR1 || Build.VERSION.SDK_INT == Build.VERSION_CODES.M){
+            AppBarLayout toolbar = (AppBarLayout) findViewById(R.id.appbar);
+            CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams)toolbar.getLayoutParams();
+            params.setMargins(0, 70, 0, 0);
+        }
     }
 
 
@@ -68,8 +105,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-        // Add a marker in Sydney and TriggerListener the camera
+        loadMap();
+      /*  // Add a marker in Sydney and TriggerListener the camera
         LatLng sydney = new LatLng(6.5023094, 3.377748);
         LatLng sydney1 = new LatLng(6.5022912, 3.377748);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marking places you visit"));
@@ -77,10 +114,33 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         CameraUpdate updateFactory = CameraUpdateFactory.newLatLngZoom(sydney, 16);
         mMap.moveCamera(updateFactory);
         CameraUpdate updateFactory1 = CameraUpdateFactory.newLatLngZoom(sydney1, 16);
-//        mMap.moveCamera(updateFactory1);
-        mMap.animateCamera(updateFactory);
+        mMap.moveCamera(updateFactory1);*/
+//        mMap.animateCamera(updateFactory);
+    }
 
+    private void loadMap(){
+        Cursor cursor = location.getLocationDataByDate(viewMapDate);
+        // Cycle through and display every row of data
+        CameraUpdate cameraUpdate;
+        if(cursor.moveToFirst()){
+            do{
+                LatLng sydney = new LatLng(Double.parseDouble(cursor.getString(cursor.getColumnIndex("coord_lat"))),
+                        Double.parseDouble(cursor.getString(cursor.getColumnIndex("coord_long"))));
+                String address = cursor.getString(cursor.getColumnIndex("street")) +
+                        " " + cursor.getString(cursor.getColumnIndex("state")) +
+                        " " +cursor.getString(cursor.getColumnIndex("country")) +
+                        " Spent " + cursor.getString(cursor.getColumnIndex("standing_time")) + "min " +
+                        " From " + cursor.getString(cursor.getColumnIndex("start_time")) +
+                        " To " + cursor.getString(cursor.getColumnIndex("stop_time")) +
+                        " Set Time " + cursor.getString(cursor.getColumnIndex("set_record_time"));
+                mMap.addMarker(new MarkerOptions().position(sydney).title(address));
+                cameraUpdate = CameraUpdateFactory.newLatLngZoom(sydney, 15);
+                mMap.moveCamera(cameraUpdate);
+                Log.v(TAG, address);
+            }while (cursor.moveToNext());
+            mMap.animateCamera(cameraUpdate);
 
+        }
     }
 
     private CustomTimePickerDialog.OnTimeSetListener timeSetListener = new CustomTimePickerDialog.OnTimeSetListener() {
@@ -94,36 +154,69 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.play:
-                if (!timerHasStarted) {
-                    startService(new Intent(getBaseContext(), StandingService.class));
-                    timerHasStarted = true;
-                    playAndStop.setImageResource(R.drawable.stop);
-                } else {
-                    stopService(new Intent(getBaseContext(), StandingService.class));
-                    timerHasStarted = false;
-                    playAndStop.setImageResource(R.drawable.play);
-                }
+                startTracking();
                 break;
             case R.id.clock:
-                CustomTimePickerDialog timePickerDialog = new CustomTimePickerDialog(MapsActivity.this, timeSetListener,
-                        Calendar.getInstance().get(Calendar.HOUR),
-                        CustomTimePickerDialog.getRoundedMinute(Calendar.getInstance().get(Calendar.MINUTE) +
-                                CustomTimePickerDialog.TIME_PICKER_INTERVAL), true);
-                timePickerDialog.setTitle("Set hours and minutes");
-                timePickerDialog.show();
+                setTrackingTime();
                 break;
             case R.id.date_picker:
-                DialogFragment newFragment = new SelectDateFragment(new SelectDateFragment.CallBack() {
-                    @Override
-                    public void onFinished(int dd, int mm, int yy) {
-                        String date = String.format("%d/%d/%d", dd, mm, yy);
-                        dateSet.setText(date);
-                        Log.v(TAG, date);
-                    }
-                });
-                newFragment.show(getSupportFragmentManager(), "DatePicker");
+                selectDate();
+                break;
+            case R.id.view_headline:
+                mDrawerLayout.openDrawer(GravityCompat.START);
                 break;
         }
     }
+
+    private void selectDate() {
+        DialogFragment newFragment = new SelectDateFragment(new SelectDateFragment.CallBack() {
+            @Override
+            public void onFinished(int dd, int mm, int yy) {
+                String date = String.format("%d/%d/%d", dd, mm, yy);
+                viewMapDate = date;
+                loadMap();
+                dateSet.setText(date);
+                Log.v(TAG, date);
+            }
+        });
+        newFragment.show(getSupportFragmentManager(), "DatePicker");
+    }
+
+    private void setTrackingTime() {
+        CustomTimePickerDialog timePickerDialog = new CustomTimePickerDialog(MapsActivity.this, timeSetListener,
+                Calendar.getInstance().get(Calendar.HOUR),
+                CustomTimePickerDialog.getRoundedMinute(Calendar.getInstance().get(Calendar.MINUTE) +
+                        CustomTimePickerDialog.TIME_PICKER_INTERVAL), true);
+        timePickerDialog.setTitle("Set hours and minutes");
+        timePickerDialog.show();
+    }
+
+    private void startTracking() {
+        if (!timerHasStarted) {
+            startService(new Intent(getBaseContext(), StandingService.class));
+            timerHasStarted = true;
+            playAndStop.setImageResource(R.drawable.stop);
+        } else {
+            stopService(new Intent(getBaseContext(), StandingService.class));
+            timerHasStarted = false;
+            playAndStop.setImageResource(R.drawable.play);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        mDrawerLayout.closeDrawers();
+    }
+
+    private void setupDrawerContent(NavigationView navigationView) {
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        return true;
+                    }
+                });
+    }
+
 }
 

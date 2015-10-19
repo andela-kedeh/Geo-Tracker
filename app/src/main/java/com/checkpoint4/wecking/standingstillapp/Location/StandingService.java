@@ -75,9 +75,9 @@ public class StandingService extends Service  implements SensorEventListener {
             // motion you want to detect
             try {
 
-                if (getGravity(event) > 3){
+                if (getGravity(event) > 6){
                     state = true;
-                    if(timeSpent() > 5 && mResultReceiver != null){
+                    if(timeSpent() > 1 && mResultReceiver != null){
                         Log.v(TAG, "starting location dectetor " + timeSpent());
                         locationNeeded = true;
                         startIntentService();
@@ -128,7 +128,7 @@ public class StandingService extends Service  implements SensorEventListener {
                 Log.i(TAG, "longitude " + street);
                 Log.i(TAG, "longitude " + state);
                 Log.i(TAG, "longitude " + country);
-                new Location(getBaseContext().getApplicationContext()).insertLocation(timeSpentInMinute, startTime.getTime(), endTime.getTime(), 5, street, state, country, latitude, longitude);
+                new Location(getBaseContext().getApplicationContext()).insertLocation(timeSpentInMinute, startTime.getTime(), endTime.getTime(), 1, street, state, country, latitude, longitude);
                 locationNeeded = false;
                 locationDetector.stopSelf();
             }

@@ -71,9 +71,11 @@ public class LocationDetector extends Service {
         Double longitude = location.getLongitude();
         bundle.putDouble("longitude", longitude);
         bundle.putDouble("latitude", latitude);
-        bundle.putString("street_name", getLocationAddress(longitude, latitude, 0));
-        bundle.putString("state", getLocationAddress(longitude, latitude, 1));
-        bundle.putString("country", getLocationAddress(longitude, latitude, 2));
+        if (getLocationAddress(longitude, latitude, 0) != null) {
+            bundle.putString("street_name", getLocationAddress(longitude, latitude, 0));
+            bundle.putString("state", getLocationAddress(longitude, latitude, 1));
+            bundle.putString("country", getLocationAddress(longitude, latitude, 2));
+        }
         // Check if receiver was properly registered.
         if (mReceiver != null ){
             mReceiver.send(resultCode, bundle);
@@ -88,6 +90,7 @@ public class LocationDetector extends Service {
         @Override
         public void onLocationChanged(Location location) {
             Log.i(TAG, "location is found");
+            Log.i(TAG, "location is found" + location.getLatitude() + " " + location.getLongitude());
                 deliverResultToReceiver(Constants.SUCCESS_RESULT, location);
         }
 
@@ -115,15 +118,15 @@ public class LocationDetector extends Service {
     }
 
     private String getLocationAddress(Double longitude, Double latitude, int addressId){
-        Geocoder gcd = new Geocoder(getBaseContext().getApplicationContext(), Locale.getDefault());
+        Geocoder gcd = new Geocoder(this.getApplicationContext(), Locale.getDefault());
         List<Address> addresses = null;
         try {
             addresses = gcd.getFromLocation(latitude, longitude, 1);
         } catch (IOException e) {
+            Log.v(TAG, "addresses is null");
+            Log.v(TAG, addresses.get(0).getAddressLine(addressId).toString());
             e.printStackTrace();
         }
-//        if (addresses.size() > 0)
-            Log.v(TAG, addresses.get(0).getAddressLine(addressId).toString());
         return addresses.get(0).getAddressLine(addressId).toString();
     }
 

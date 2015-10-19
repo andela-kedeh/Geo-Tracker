@@ -96,14 +96,6 @@ public class StandingProvider extends ContentProvider {
         }
     }
 
-    private void normalizeDate(ContentValues values) {
-        // normalize the date value
-        if (values.containsKey(StandingContract.StandingEntry.COLUMN_DATE)) {
-            long dateValue = values.getAsLong(StandingContract.StandingEntry.COLUMN_DATE);
-            values.put(StandingContract.StandingEntry.COLUMN_DATE, StandingContract.normalizeDate(dateValue));
-        }
-    }
-
     @Nullable
     @Override
     public Uri insert(Uri uri, ContentValues values) {
@@ -113,7 +105,6 @@ public class StandingProvider extends ContentProvider {
 
         switch (match) {
             case STANDING: {
-                normalizeDate(values);
                 long _id = db.insert(StandingContract.StandingEntry.TABLE_NAME, null, values);
                 if ( _id > 0 )
                     returnUri = StandingContract.StandingEntry.buildStandingUri(_id);
@@ -159,7 +150,6 @@ public class StandingProvider extends ContentProvider {
 
         switch (match) {
             case STANDING:
-                normalizeDate(values);
                 rowsUpdated = db.update(StandingContract.StandingEntry.TABLE_NAME, values, selection,
                         selectionArgs);
                 break;
@@ -182,7 +172,6 @@ public class StandingProvider extends ContentProvider {
                 int returnCount = 0;
                 try {
                     for (ContentValues value : values) {
-                        normalizeDate(value);
                         long _id = db.insert(StandingContract.StandingEntry.TABLE_NAME, null, value);
                         if (_id != -1) {
                             returnCount++;

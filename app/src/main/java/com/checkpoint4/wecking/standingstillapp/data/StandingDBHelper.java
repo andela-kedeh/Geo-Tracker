@@ -9,9 +9,9 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class StandingDBHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 4;
 
-    static final String DATABASE_NAME = "Standing.db";
+    static final String DATABASE_NAME = "Location.db";
 
     public StandingDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -23,11 +23,11 @@ public class StandingDBHelper extends SQLiteOpenHelper {
         final String SQL_CREATE_STANDING_TABLE = "CREATE TABLE " + StandingContract.StandingEntry.TABLE_NAME + " (" +
                 StandingContract.StandingEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
 
-                StandingContract.StandingEntry.COLUMN_DATE + " INTEGER NOT NULL, " +
-                StandingContract.StandingEntry.COLUMN_START_TIME + " INTEGER NOT NULL, " +
-                StandingContract.StandingEntry.COLUMN_STOP_TIME + " INTEGER NOT NULL, " +
-                StandingContract.StandingEntry.COLUMN_STANDING_TIME + " INTEGER NOT NULL, " +
-                StandingContract.StandingEntry.COLUMN_SET_RECORD_TIME + " INTEGER NOT NULL, " +
+                StandingContract.StandingEntry.COLUMN_DATE + " TEXT NOT NULL," +
+                StandingContract.StandingEntry.COLUMN_START_TIME + " TEXT NOT NULL," +
+                StandingContract.StandingEntry.COLUMN_STOP_TIME + " TEXT NOT NULL," +
+                StandingContract.StandingEntry.COLUMN_STANDING_TIME + " REAL NOT NULL," +
+                StandingContract.StandingEntry.COLUMN_SET_RECORD_TIME + " REAL NOT NULL," +
 
                 StandingContract.StandingEntry.COLUMN_STREET_NAME + " TEXT NOT NULL," +
                 StandingContract.StandingEntry.COLUMN_STATE_NAME + " TEXT NOT NULL," +
