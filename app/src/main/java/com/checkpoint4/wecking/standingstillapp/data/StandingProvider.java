@@ -101,15 +101,16 @@ public class StandingProvider extends ContentProvider {
     public Uri insert(Uri uri, ContentValues values) {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         final int match = sUriMatcher.match(uri);
-        Uri returnUri;
+        Uri returnUri = null;
 
         switch (match) {
             case STANDING: {
                 long _id = db.insert(StandingContract.StandingEntry.TABLE_NAME, null, values);
                 if ( _id > 0 )
                     returnUri = StandingContract.StandingEntry.buildStandingUri(_id);
-                else
-                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                else {
+//                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                }
                 break;
             }
             default:

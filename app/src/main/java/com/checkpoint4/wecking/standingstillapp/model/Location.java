@@ -58,28 +58,10 @@ public class Location{
     public Cursor getLocationDataByDate(String date){
         // Projection contains the columns we want
         String[] projection = new String[]{"street", "state", "country", "coord_lat", "coord_long", "date",
-                "start_time", "stop_time", "standing_time", "set_record_time"};
+                "start_time", "stop_time", "standing_time", "set_record_time", "_id"};
         String[] selectionDate = {date};
         // Pass the URL, projection and I'll cover the other options below
         return resolver.query(StandingContract.StandingEntry.CONTENT_URI, projection, "date = ? ", selectionDate, null);
     }
 
- /*   String date = cursor.getString(cursor.getColumnIndex("date"));
-    String start_time = cursor.getString(cursor.getColumnIndex("start_time"));
-    String stop_time = cursor.getString(cursor.getColumnIndex("stop_time"));
-    String standing_time = cursor.getString(cursor.getColumnIndex("standing_time"));
-    String set_record_time = cursor.getString(cursor.getColumnIndex("set_record_time"));
-
-
-    String id = cursor.getString(cursor.getColumnIndex("street"));
-    String state = cursor.getString(cursor.getColumnIndex("state"));
-    String coord_lat = cursor.getString(cursor.getColumnIndex("coord_lat"));
-    String coord_long = cursor.getString(cursor.getColumnIndex("coord_long"));
-    String country = cursor.getString(cursor.getColumnIndex("country"));
-
-
-    contactList = contactList + id + ", " + state + " " + country + " " + "coord_lat "
-            + coord_lat + " coord_long " + coord_long + " Date" + date + " Start time "
-            + start_time + " stop_time " + stop_time + " standing_time " + standing_time + " set_record_time " + set_record_time +"\n";
-*/
 }

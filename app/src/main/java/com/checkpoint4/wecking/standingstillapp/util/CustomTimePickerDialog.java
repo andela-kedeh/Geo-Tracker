@@ -31,7 +31,7 @@ public class CustomTimePickerDialog extends TimePickerDialog {
         timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
             @Override
             public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-                setTitle(hourOfDay + " : " + minute);
+                setTitle("Minute " + hourOfDay + " : Seconds " + minute);
                 hour = hourOfDay;
                 min = minute;
             }

@@ -18,7 +18,7 @@ public class Formater {
 
     public static String formatDate(long longDate){
         Date date=new Date(longDate);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String dateText = dateFormat.format(date);
 
         return dateText;
