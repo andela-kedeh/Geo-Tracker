@@ -52,28 +52,9 @@ public class TestUtilities extends AndroidTestCase {
         return weatherValues;
     }
 
-    static ContentValues createNorthPoleLocationValues() {
-        // Create a new map of values, where column names are the keys
-        ContentValues testValues = new ContentValues();
-        testValues.put(StandingContract.LocationEntry.COLUMN_CITY_NAME, "North Pole");
-        testValues.put(StandingContract.LocationEntry.COLUMN_COORD_LAT, 64.7488);
-        testValues.put(StandingContract.LocationEntry.COLUMN_COORD_LONG, -147.353);
 
-        return testValues;
-    }
 
-    static long insertNorthPoleLocationValues(Context context) {
-        StandingDBHelper dbHelper = new StandingDBHelper(context);
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        ContentValues testValues = TestUtilities.createNorthPoleLocationValues();
 
-        long locationRowId;
-        locationRowId = db.insert(StandingContract.LocationEntry.TABLE_NAME, null, testValues);
-
-        assertTrue("Error: Failure to insert North Pole Location Values", locationRowId != -1);
-
-        return locationRowId;
-    }
 
     static class TestContentObserver extends ContentObserver {
         final HandlerThread mHT;
