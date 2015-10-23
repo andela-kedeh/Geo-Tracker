@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
-import android.view.DragEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,6 +19,7 @@ import android.widget.ImageView;
 import com.checkpoint4.wecking.standingstillapp.Location.Constants;
 import com.checkpoint4.wecking.standingstillapp.Location.StandingService;
 import com.checkpoint4.wecking.standingstillapp.model.Location;
+import com.checkpoint4.wecking.standingstillapp.util.CallBack;
 import com.checkpoint4.wecking.standingstillapp.util.CustomTimePickerDialog;
 import com.checkpoint4.wecking.standingstillapp.util.Formater;
 import com.checkpoint4.wecking.standingstillapp.util.ListLocation;
@@ -178,7 +178,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void selectDate() {
-        DialogFragment newFragment = new SelectDateFragment(new SelectDateFragment.CallBack() {
+        DialogFragment newFragment = new SelectDateFragment(new CallBack() {
             @Override
             public void onFinished(int dd, int mm, int yy) {
                 String date = String.format("%d/%d/%d", dd, mm+1, yy);

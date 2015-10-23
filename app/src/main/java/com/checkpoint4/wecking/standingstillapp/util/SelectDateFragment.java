@@ -36,8 +36,4 @@ public class SelectDateFragment extends DialogFragment implements DatePickerDial
         mCallBack.onFinished(dd, mm, yy);
     }
 
-
-    public interface CallBack {
-        void onFinished(int dd, int mm, int yy );
-    }
 }

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Standing still app</string>
+    <string name="app_name">Geo Tracker</string>
     <string name="title_activity_maps">Geo Tracker</string>
     <string name="menu_settings">Settings</string>
 </resources>
