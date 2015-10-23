@@ -39,6 +39,7 @@ public class StandingService extends Service  implements SensorEventListener {
     private Date endTime;
     protected static final String TAG = "StandingService";
     private AddressResultReceiver mResultReceiver;
+    public static boolean isRunning = false;
 
     int timeSpentInMinute;
 
@@ -58,6 +59,7 @@ public class StandingService extends Service  implements SensorEventListener {
     public int onStartCommand(Intent intent, int flags, int startId) {
         initialize();
         Toast.makeText(StandingService.this, "Service started", Toast.LENGTH_SHORT).show();
+        isRunning = true;
         return START_STICKY;
     }
 
@@ -65,6 +67,7 @@ public class StandingService extends Service  implements SensorEventListener {
     public void onDestroy() {
         sensorMan.unregisterListener(this);
         Toast.makeText(StandingService.this, "Service Ended", Toast.LENGTH_SHORT).show();
+        isRunning = false;
         super.onDestroy();
     }
 
@@ -77,7 +80,7 @@ public class StandingService extends Service  implements SensorEventListener {
 
                 if (getGravity(event) > 6){
                     state = true;
-                    if(timeSpent() > 1 && mResultReceiver != null){
+                    if(timeSpent() >= Constants.interval && mResultReceiver != null){
                         Log.v(TAG, "starting location dectetor " + timeSpent());
                         locationNeeded = true;
                         startIntentService();
@@ -90,6 +93,7 @@ public class StandingService extends Service  implements SensorEventListener {
                         startTime = new Date();
                     }
                     state = false;
+                    Log.v(TAG, "" + Constants.interval);
                 }
             }catch(Exception e){
                 e.printStackTrace();
@@ -128,7 +132,7 @@ public class StandingService extends Service  implements SensorEventListener {
                 Log.i(TAG, "longitude " + street);
                 Log.i(TAG, "longitude " + state);
                 Log.i(TAG, "longitude " + country);
-                new Location(getBaseContext().getApplicationContext()).insertLocation(timeSpentInMinute, startTime.getTime(), endTime.getTime(), 1, street, state, country, latitude, longitude);
+                new Location(getBaseContext().getApplicationContext()).insertLocation(timeSpentInMinute, startTime.getTime(), endTime.getTime(), Constants.interval, street, state, country, latitude, longitude);
                 locationNeeded = false;
                 locationDetector.stopSelf();
             }
@@ -186,7 +190,6 @@ public class StandingService extends Service  implements SensorEventListener {
         endTime = new Date();
         long result = endTime.getTime() - startTime.getTime();
         timeSpentInMinute = (int)(result/1000)/60;
-
         return timeSpentInMinute;
     }
 

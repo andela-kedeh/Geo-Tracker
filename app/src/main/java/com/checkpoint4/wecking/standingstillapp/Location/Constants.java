@@ -15,5 +15,7 @@ public final class Constants {
 
     public static final String RECEIVER = PACKAGE_NAME + ".StandingService";
 
+    public static int interval = 5;
+
 
 }

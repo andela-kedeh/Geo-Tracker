@@ -53,7 +53,11 @@ public class LocationDetector extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "Location Dectetor started");
+        try {
             mReceiver = intent.getParcelableExtra(Constants.RECEIVER);
+        }catch(NullPointerException ne){
+            ne.printStackTrace();
+        }
 
             mlocManager.requestLocationUpdates(locationProvider, 0, 0, mlocListener);
             mlocManager.requestLocationUpdates(locationProvider2, 0, 0, mlocListener);
@@ -71,10 +75,14 @@ public class LocationDetector extends Service {
         Double longitude = location.getLongitude();
         bundle.putDouble("longitude", longitude);
         bundle.putDouble("latitude", latitude);
+        try{
         if (getLocationAddress(longitude, latitude, 0) != null) {
             bundle.putString("street_name", getLocationAddress(longitude, latitude, 0));
-            bundle.putString("state", getLocationAddress(longitude, latitude, 1));
+            bundle.putString("state", getLocationAddress(longitude, latitude, Constants.interval));
             bundle.putString("country", getLocationAddress(longitude, latitude, 2));
+        }
+        }catch (Exception e){
+            e.printStackTrace();
         }
         // Check if receiver was properly registered.
         if (mReceiver != null ){
@@ -122,9 +130,9 @@ public class LocationDetector extends Service {
         List<Address> addresses = null;
         try {
             addresses = gcd.getFromLocation(latitude, longitude, 1);
-        } catch (IOException e) {
-            Log.v(TAG, "addresses is null");
             Log.v(TAG, addresses.get(0).getAddressLine(addressId).toString());
+        } catch (Exception e) {
+            Log.v(TAG, "addresses is null");
             e.printStackTrace();
         }
         return addresses.get(0).getAddressLine(addressId).toString();
