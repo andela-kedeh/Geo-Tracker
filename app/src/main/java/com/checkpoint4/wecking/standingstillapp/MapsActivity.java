@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -120,22 +121,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         loadMap();
-      /*  // Add a marker in Sydney and TriggerListener the camera
-        LatLng sydney = new LatLng(6.5023094, 3.377748);
-        LatLng sydney1 = new LatLng(6.5022912, 3.377748);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marking places you visit"));
-        mMap.addMarker(new MarkerOptions().position(sydney1).title("Marking places you visit"));
-        CameraUpdate updateFactory = CameraUpdateFactory.newLatLngZoom(sydney, 16);
-        mMap.moveCamera(updateFactory);
-        CameraUpdate updateFactory1 = CameraUpdateFactory.newLatLngZoom(sydney1, 16);
-        mMap.moveCamera(updateFactory1);*/
-//        mMap.animateCamera(updateFactory);
     }
 
     private void loadMap(){
         Cursor cursor = location.getLocationDataByDate(viewMapDate);
         // Cycle through and display every row of data
         CameraUpdate cameraUpdate;
+        mMap.clear();
+
         if(cursor.moveToFirst()){
             do{
                 LatLng sydney = new LatLng(Double.parseDouble(cursor.getString(cursor.getColumnIndex("coord_lat"))),
@@ -147,7 +140,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         " From " + cursor.getString(cursor.getColumnIndex("start_time")) +
                         " To " + cursor.getString(cursor.getColumnIndex("stop_time")) +
                         " Set Time " + cursor.getString(cursor.getColumnIndex("set_record_time"));
-                mMap.addMarker(new MarkerOptions().position(sydney).title(address));
+                MarkerOptions marker = new MarkerOptions().position(sydney).title(address);
+                mMap.addMarker(marker);
                 cameraUpdate = CameraUpdateFactory.newLatLngZoom(sydney, 8);
                 mMap.moveCamera(cameraUpdate);
                 Log.v(TAG, address);
@@ -192,6 +186,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 viewMapDate = date;
                 loadMap();
                 dateSet.setText(date);
+                loadListItem(true);
                 Log.v(TAG, date);
             }
         });
