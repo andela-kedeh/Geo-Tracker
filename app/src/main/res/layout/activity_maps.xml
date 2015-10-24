@@ -84,7 +84,8 @@
                 android:id="@+id/date_picker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/calendar_multiple_check" />
+                android:src="@drawable/calendar_multiple_check"
+                android:layout_marginLeft="21dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -102,7 +103,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:src="@drawable/play"
-                android:layout_marginRight="20dp"/>
+                android:layout_marginRight="18dp" />
 
 
         </android.support.v7.widget.Toolbar>
