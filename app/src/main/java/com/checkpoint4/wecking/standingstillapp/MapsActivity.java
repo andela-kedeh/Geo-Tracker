@@ -144,10 +144,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.addMarker(marker);
                 cameraUpdate = CameraUpdateFactory.newLatLngZoom(sydney, 8);
                 mMap.moveCamera(cameraUpdate);
-                Log.v(TAG, address);
             }while (cursor.moveToNext());
             mMap.animateCamera(cameraUpdate);
-
+        }else{
+            Toast.makeText(this, "No location recorded for " + viewMapDate, Toast.LENGTH_SHORT).show();
         }
     }
 
