@@ -76,11 +76,11 @@ public class LocationDetector extends Service {
         bundle.putDouble("longitude", longitude);
         bundle.putDouble("latitude", latitude);
         try{
-        if (getLocationAddress(longitude, latitude, 0) != null) {
-            bundle.putString("street_name", getLocationAddress(longitude, latitude, 0));
-            bundle.putString("state", getLocationAddress(longitude, latitude, Constants.interval));
-            bundle.putString("country", getLocationAddress(longitude, latitude, 2));
-        }
+            if (getLocationAddress(longitude, latitude, 0) != null) {
+                bundle.putString("street_name", getLocationAddress(longitude, latitude, 0));
+                bundle.putString("state", getLocationAddress(longitude, latitude, Constants.interval));
+                bundle.putString("country", getLocationAddress(longitude, latitude, 2));
+            }
         }catch (Exception e){
             e.printStackTrace();
         }

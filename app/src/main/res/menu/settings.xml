@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group>
+        <item android:id="@+id/pick_date"
+            android:icon="@drawable/calendar_black"
+            android:title="Pick Date" />
+    </group>
+    <group>
+        <item
+            android:id="@+id/set_time"
+            android:icon="@drawable/clock_black"
+            android:title="Set Record Time"
+            android:color="@color/divider"/>
+    </group>
+</menu>

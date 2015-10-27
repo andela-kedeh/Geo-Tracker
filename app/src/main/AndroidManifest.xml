@@ -36,10 +36,10 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
+            android:value="AIzaSyDHxwze1Y72O517karw3SAtFftV5vihC1c"/>
 
         <activity
-            android:name=".MapsActivity"
+            android:name=".activity.MapsActivity"
             android:label="@string/title_activity_maps"
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait">
