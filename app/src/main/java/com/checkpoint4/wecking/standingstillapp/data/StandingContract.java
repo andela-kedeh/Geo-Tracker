@@ -16,14 +16,6 @@ public class StandingContract {
 
     public static final String PATH_STANDING = "standing";
 
-    public static long normalizeDate(long startDate){
-        Time time = new Time();
-        time.setToNow();
-        int julianDay = Time.getJulianDay(startDate, time.gmtoff);
-
-        return time.setJulianDay(julianDay);
-    }
-
     public static final class StandingEntry implements BaseColumns {
         public static final String URL = "content://" + CONTENT_AUTHORITY + "/" + PATH_STANDING;
         public static final Uri CONTENT_URI = Uri.parse(URL);
@@ -45,9 +37,6 @@ public class StandingContract {
         public static final String COLUMN_STANDING_TIME = "standing_time";
         public static final String COLUMN_SET_RECORD_TIME = "set_record_time";
 
-        public static final String COLUMN_STREET_NAME = "street";
-        public static final String COLUMN_STATE_NAME = "state";
-        public static final String COLUMN_COUNTRY_NAME = "country";
         public static final String COLUMN_COORD_LAT = "coord_lat";
         public static final String COLUMN_COORD_LONG = "coord_long";
 

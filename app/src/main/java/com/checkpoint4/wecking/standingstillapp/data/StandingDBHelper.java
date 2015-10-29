@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class StandingDBHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
 
     static final String DATABASE_NAME = "Location.db";
 
@@ -29,9 +29,6 @@ public class StandingDBHelper extends SQLiteOpenHelper {
                 StandingContract.StandingEntry.COLUMN_STANDING_TIME + " REAL NOT NULL," +
                 StandingContract.StandingEntry.COLUMN_SET_RECORD_TIME + " REAL NOT NULL," +
 
-                StandingContract.StandingEntry.COLUMN_STREET_NAME + " TEXT NOT NULL," +
-                StandingContract.StandingEntry.COLUMN_STATE_NAME + " TEXT NOT NULL," +
-                StandingContract.StandingEntry.COLUMN_COUNTRY_NAME + " TEXT NOT NULL," +
                 StandingContract.StandingEntry.COLUMN_COORD_LAT + " REAL NOT NULL," +
                 StandingContract.StandingEntry.COLUMN_COORD_LONG + " REAL NOT NULL" +
                 " );";

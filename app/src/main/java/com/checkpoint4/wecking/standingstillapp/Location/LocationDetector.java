@@ -25,9 +25,8 @@ import java.util.Locale;
  */
 public class LocationDetector extends Service {
     private static final String TAG = "Location";
-
-    public String locationProvider = LocationManager.NETWORK_PROVIDER;
-    public String locationProvider2 = LocationManager.GPS_PROVIDER;
+    private String locationProvider = LocationManager.NETWORK_PROVIDER;
+    private String locationProvider2 = LocationManager.GPS_PROVIDER;
 
     LocationManager mlocManager;
     LocationListener mlocListener;
@@ -58,7 +57,6 @@ public class LocationDetector extends Service {
         }catch(NullPointerException ne){
             ne.printStackTrace();
         }
-
             mlocManager.requestLocationUpdates(locationProvider, 0, 0, mlocListener);
             mlocManager.requestLocationUpdates(locationProvider2, 0, 0, mlocListener);
             Log.e(TAG, "requesting location updates");
@@ -75,15 +73,6 @@ public class LocationDetector extends Service {
         Double longitude = location.getLongitude();
         bundle.putDouble("longitude", longitude);
         bundle.putDouble("latitude", latitude);
-        try{
-            if (getLocationAddress(longitude, latitude, 0) != null) {
-                bundle.putString("street_name", getLocationAddress(longitude, latitude, 0));
-                bundle.putString("state", getLocationAddress(longitude, latitude, Constants.interval));
-                bundle.putString("country", getLocationAddress(longitude, latitude, 2));
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
         // Check if receiver was properly registered.
         if (mReceiver != null ){
             mReceiver.send(resultCode, bundle);
@@ -97,14 +86,11 @@ public class LocationDetector extends Service {
 
         @Override
         public void onLocationChanged(Location location) {
-            Log.i(TAG, "location is found");
-            Log.i(TAG, "location is found" + location.getLatitude() + " " + location.getLongitude());
                 deliverResultToReceiver(Constants.SUCCESS_RESULT, location);
         }
 
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {
-            Log.i(TAG, "location status change");
         }
 
         @Override
@@ -114,7 +100,6 @@ public class LocationDetector extends Service {
 
         @Override
         public void onProviderDisabled(String provider) {
-            Log.i(TAG, "location provider disabled");
         }
 
     }
@@ -124,19 +109,5 @@ public class LocationDetector extends Service {
             return LocationDetector.this;
         }
     }
-
-    private String getLocationAddress(Double longitude, Double latitude, int addressId){
-        Geocoder gcd = new Geocoder(this.getApplicationContext(), Locale.getDefault());
-        List<Address> addresses = null;
-        try {
-            addresses = gcd.getFromLocation(latitude, longitude, 1);
-            Log.v(TAG, addresses.get(0).getAddressLine(addressId).toString());
-        } catch (Exception e) {
-            Log.v(TAG, "addresses is null");
-            e.printStackTrace();
-        }
-        return addresses.get(0).getAddressLine(addressId).toString();
-    }
-
 
 }

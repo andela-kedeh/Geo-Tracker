@@ -34,7 +34,7 @@ public class Location{
 
 
 
-    public void insertLocation(long timeSpentInMinute, long startTime, long endTime, int timeSet, String street, String state, String country, Double latitude, Double longitude){
+    public void insertLocation(long timeSpentInMinute, long startTime, long endTime, int timeSet, Double latitude, Double longitude){
         ContentValues values = new ContentValues();
         long time = new Date().getTime();
 
@@ -44,20 +44,16 @@ public class Location{
         values.put(StandingContract.StandingEntry.COLUMN_STANDING_TIME, timeSpentInMinute);
         values.put(StandingContract.StandingEntry.COLUMN_SET_RECORD_TIME, timeSet);
 
-        values.put(StandingContract.StandingEntry.COLUMN_STREET_NAME, street);
-        values.put(StandingContract.StandingEntry.COLUMN_STATE_NAME, state);
-        values.put(StandingContract.StandingEntry.COLUMN_COUNTRY_NAME, country);
         values.put(StandingContract.StandingEntry.COLUMN_COORD_LAT, latitude);
         values.put(StandingContract.StandingEntry.COLUMN_COORD_LONG, longitude);
         uri = mContext.getContentResolver().insert(StandingContract.StandingEntry.CONTENT_URI, values);
         Log.v("Location", "Saved to db done");
-        Toast.makeText(mContext, "New Location Added", Toast.LENGTH_LONG);
-
+        Toast.makeText(mContext, "New Location Recorded", Toast.LENGTH_LONG);
     }
 
     public Cursor getLocationDataByDate(String date){
         // Projection contains the columns we want
-        String[] projection = new String[]{"street", "state", "country", "coord_lat", "coord_long", "date",
+        String[] projection = new String[]{"coord_lat", "coord_long", "date",
                 "start_time", "stop_time", "standing_time", "set_record_time", "_id"};
         String[] selectionDate = {date};
         // Pass the URL, projection and I'll cover the other options below

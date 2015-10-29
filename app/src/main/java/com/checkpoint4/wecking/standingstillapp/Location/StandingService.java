@@ -116,12 +116,9 @@ public class StandingService extends Service  implements SensorEventListener {
         protected void onReceiveResult(int resultCode, Bundle resultData) {
             // Show a toast message if an address was found.
             if (resultCode == Constants.SUCCESS_RESULT && locationNeeded) {
-                Double longitude = resultData.getDouble("longitude");
-                Double latitude = resultData.getDouble("latitude");
-                String street = resultData.getString("street_name");
-                String state = resultData.getString("state");
-                String country = resultData.getString("country");
-                new Location(getBaseContext().getApplicationContext()).insertLocation(timeSpentInMinute, startTime.getTime(), endTime.getTime(), Constants.interval, street, state, country, latitude, longitude);
+                new Location(getBaseContext().getApplicationContext()).insertLocation(timeSpentInMinute,
+                        startTime.getTime(), endTime.getTime(), Constants.interval,
+                        resultData.getDouble("latitude"), resultData.getDouble("longitude"));
                 locationNeeded = false;
                 locationDetector.stopSelf();
             }

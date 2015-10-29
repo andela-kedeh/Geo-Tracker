@@ -2,6 +2,8 @@ package com.checkpoint4.wecking.standingstillapp.activity;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Build;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
@@ -20,12 +22,12 @@ import com.checkpoint4.wecking.standingstillapp.Location.Constants;
 import com.checkpoint4.wecking.standingstillapp.Location.StandingService;
 import com.checkpoint4.wecking.standingstillapp.R;
 import com.checkpoint4.wecking.standingstillapp.model.Location;
-import com.checkpoint4.wecking.standingstillapp.util.CallBack;
-import com.checkpoint4.wecking.standingstillapp.util.CustomTimePickerDialog;
+import com.checkpoint4.wecking.standingstillapp.ApplicationComponent.CallBack;
+import com.checkpoint4.wecking.standingstillapp.ApplicationComponent.CustomTimePickerDialog;
 import com.checkpoint4.wecking.standingstillapp.util.Formater;
-import com.checkpoint4.wecking.standingstillapp.util.ListLocation;
+import com.checkpoint4.wecking.standingstillapp.adapter.ListLocationAdapter;
 import com.checkpoint4.wecking.standingstillapp.util.NetworkUtil;
-import com.checkpoint4.wecking.standingstillapp.util.SelectDateFragment;
+import com.checkpoint4.wecking.standingstillapp.ApplicationComponent.SelectDateFragment;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -43,6 +45,8 @@ import android.widget.Toast;
 import java.lang.reflect.Field;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, View.OnClickListener, PopupMenu.OnMenuItemClickListener {
@@ -59,9 +63,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private String viewMapDate = Formater.formatDate(new Date().getTime());
     private SupportMapFragment mapFragment;
     private ListView locationList;
-    private ListLocation listLocation;
+    private ListLocationAdapter listLocation;
     private Cursor cursor;
     private NavigationView navigationView;
+    private ImageView datePicker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,36 +74,41 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_main);
         setVersionLayout();
         initialize();
+        setOnClickListenner();
+        loadListItem(true);
+        setTrackingTime();
     }
 
 
-    public void initialize(){
+    private void initialize(){
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         playAndStop = (ImageView) findViewById(R.id.play);
-        playAndStop.setOnClickListener(this);
         clock = (ImageView) findViewById(R.id.clock);
-        clock.setOnClickListener(this);
-        ImageView datePicker = (ImageView) findViewById(R.id.date_picker);
-        datePicker.setOnClickListener(this);
+        datePicker = (ImageView) findViewById(R.id.date_picker);
         dateSet = (TextView) findViewById(R.id.date);
         dateSet.setText(Formater.formatDate(new Date().getTime()).toString());
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
         headline = (ImageView) findViewById(R.id.view_headline);
-        headline.setOnClickListener(this);
-        location = new Location(this);
         navigationView = (NavigationView) findViewById(R.id.nav_items);
         setupDrawerContent(navigationView);
         locationList = (ListView) findViewById(R.id.listView);
-        loadListItem(true);
         settings = (ImageView) findViewById(R.id.settings);
+    }
+
+    private void setOnClickListenner(){
+        playAndStop.setOnClickListener(this);
+        clock.setOnClickListener(this);
+        datePicker.setOnClickListener(this);
+        mapFragment.getMapAsync(this);
+        headline.setOnClickListener(this);
+        location = new Location(this);
         settings.setOnClickListener(this);
     }
 
     private void loadListItem(boolean isList) {
         Cursor locationByDate = location.getLocationDataByDate(viewMapDate);
-        listLocation = new ListLocation(this, locationByDate, isList);
+        listLocation = new ListLocationAdapter(this, locationByDate, isList);
         locationList.setAdapter(listLocation);
     }
 
@@ -110,17 +120,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-
-
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or TriggerListener the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -133,15 +132,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Cycle through and display every row of data
         CameraUpdate cameraUpdate;
         mMap.clear();
-
         if(cursor.moveToFirst()){
             do{
-                LatLng sydney = new LatLng(Double.parseDouble(cursor.getString(cursor.getColumnIndex("coord_lat"))),
-                        Double.parseDouble(cursor.getString(cursor.getColumnIndex("coord_long"))));
-                String address = cursor.getString(cursor.getColumnIndex("street")) +
-                        " " + cursor.getString(cursor.getColumnIndex("state")) +
-                        " " +cursor.getString(cursor.getColumnIndex("country")) +
-                        " Spent " + cursor.getString(cursor.getColumnIndex("standing_time")) + "min " +
+                Double longitude = Double.parseDouble(cursor.getString(cursor.getColumnIndex("coord_lat")));
+                Double latitude = Double.parseDouble(cursor.getString(cursor.getColumnIndex("coord_long")));
+                LatLng sydney = new LatLng(longitude, latitude);
+                String address = " ";
+                try{
+                    address = Constants.getLocationAddress(longitude, latitude, 0, this) +
+                            " " + Constants.getLocationAddress(longitude, latitude, 1, this) +
+                            " " +Constants.getLocationAddress(longitude, latitude, 2, this);
+                } catch (Exception e){
+                    e.printStackTrace();
+                    Toast.makeText(this, "Connect to the Internet to See Street Name", Toast.LENGTH_LONG);
+                }
+                address = address + " Spent " + cursor.getString(cursor.getColumnIndex("standing_time")) + "min " +
                         " From " + cursor.getString(cursor.getColumnIndex("start_time")) +
                         " To " + cursor.getString(cursor.getColumnIndex("stop_time")) +
                         " Set Time " + cursor.getString(cursor.getColumnIndex("set_record_time"));
@@ -152,7 +157,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }while (cursor.moveToNext());
             mMap.animateCamera(cameraUpdate);
         }else{
-            Toast.makeText(this, "No location recorded for " + viewMapDate, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "For " + viewMapDate + " there is no location history", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -200,7 +205,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             argTypes = new Class[] { boolean.class };
             menuHelper.getClass().getDeclaredMethod("setForceShowIcon", argTypes).invoke(menuHelper, true);
         } catch (Exception e) {
-            Log.w(TAG, "error forcing menu icons to show", e);
             popup.show();
             return;
         }
@@ -212,12 +216,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onFinished(int dd, int mm, int yy) {
                 String date = String.format("%d/%d/%d", dd, mm+1, yy);
-                Log.v(TAG, Formater.formatDate(new Date().getTime()));
                 viewMapDate = date;
                 loadMap();
                 dateSet.setText(date);
                 loadListItem(true);
-                Log.v(TAG, date);
             }
         });
         newFragment.show(getSupportFragmentManager(), "DatePicker");
@@ -228,7 +230,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Calendar.getInstance().get(Calendar.HOUR),
                 CustomTimePickerDialog.getRoundedMinute(Calendar.getInstance().get(Calendar.MINUTE) +
                         CustomTimePickerDialog.TIME_PICKER_INTERVAL), true);
-        timePickerDialog.setTitle("Set Minutes and Seconds");
+        timePickerDialog.setTitle("Record Location Every ");
         timePickerDialog.show();
     }
 
@@ -238,13 +240,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             timerHasStarted = false;
             playAndStop.setImageResource(R.drawable.play);
         } else {
-            if(NetworkUtil.getConnectivityStatus(this)) {
-                startService(new Intent(getBaseContext(), StandingService.class));
-                timerHasStarted = true;
-                playAndStop.setImageResource(R.drawable.stop);
-            }else{
-                Toast.makeText(this, "No Internet Connection Error", Toast.LENGTH_SHORT).show();
-            }
+            startService(new Intent(getBaseContext(), StandingService.class));
+            timerHasStarted = true;
+            playAndStop.setImageResource(R.drawable.stop);
         }
     }
 
@@ -291,5 +289,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 return false;
         }
     }
+
 }
 
