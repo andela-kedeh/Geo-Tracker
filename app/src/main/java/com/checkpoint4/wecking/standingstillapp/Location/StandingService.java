@@ -22,7 +22,7 @@ import com.checkpoint4.wecking.standingstillapp.model.Location;
 import java.util.Date;
 
 /**
- * Created by andela on 10/8/15.
+ * Created by wecking on 10/8/15.
  */
 public class StandingService extends Service  implements SensorEventListener {
 

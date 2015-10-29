@@ -16,7 +16,7 @@ import com.checkpoint4.wecking.standingstillapp.util.NetworkUtil;
 import java.util.ArrayList;
 
 /**
- * Created by andela on 10/22/15.
+ * Created by wecking on 10/22/15.
  */
 public class ListLocationAdapter extends CursorAdapter{
 
@@ -27,6 +27,8 @@ public class ListLocationAdapter extends CursorAdapter{
     private TextView tLocation;
     private TextView timeSpent;
     private TextView interval;
+    private Double latitude;
+    private Double longitude;
 
     public ListLocationAdapter(Context context, Cursor cursor, boolean isList) {
         super(context, cursor, 0);
@@ -35,37 +37,18 @@ public class ListLocationAdapter extends CursorAdapter{
         this.isList = isList;
     }
 
-
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         return LayoutInflater.from(context).inflate(R.layout.list_location, parent, false);
     }
 
-    // The bindView method is used to bind all data to a given view
-    // such as setting the text on a TextView.
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        // Find fields to populate in inflated template
         initialize(view);
-        Double latitude = Double.parseDouble(cursor.getString(cursor.getColumnIndex("coord_lat")));
-        Double longitude = Double.parseDouble(cursor.getString(cursor.getColumnIndex("coord_long")));
+        latitude = Double.parseDouble(cursor.getString(cursor.getColumnIndex("coord_lat")));
+        longitude = Double.parseDouble(cursor.getString(cursor.getColumnIndex("coord_long")));
+        setAddressView(cursor);
 
-        if(isList){
-            String date = cursor.getString(cursor.getColumnIndex("date"));
-            tAddress.setText(date);
-        }else {
-            String address = " ";
-                    if(NetworkUtil.getConnectivityStatus(context)) {
-                        address = Constants.getLocationAddress(longitude, latitude, 0, context) +
-                            " " + Constants.getLocationAddress(longitude, latitude, 1, context) +
-                            " " + Constants.getLocationAddress(longitude, latitude, 2, context);
-
-                } else {
-                    Toast.makeText(context, "Connect to the Internet to See Street Name", Toast.LENGTH_LONG);
-                    address = "Connect to see full address";
-                }
-                tAddress.setText(address);
-        }
         String time = " Spent " + cursor.getString(cursor.getColumnIndex("standing_time")) + "min " +
                 " Set Time " + cursor.getString(cursor.getColumnIndex("set_record_time"));
         String intervalValue = " From " + cursor.getString(cursor.getColumnIndex("start_time")) +
@@ -75,6 +58,29 @@ public class ListLocationAdapter extends CursorAdapter{
         tLocation.setText(location);
         timeSpent.setText(time);
         interval.setText(intervalValue);
+    }
+
+    private void setAddressView(Cursor cursor) {
+        if(isList){
+            String date = cursor.getString(cursor.getColumnIndex("date"));
+            tAddress.setText(date);
+        }else {
+            String address = " ";
+            if(NetworkUtil.getConnectivityStatus(context)) {
+                try {
+                    address = Constants.getLocationAddress(longitude, latitude, 0, context) +
+                            " " + Constants.getLocationAddress(longitude, latitude, 1, context) +
+                            " " + Constants.getLocationAddress(longitude, latitude, 2, context);
+                }catch(Exception e){
+                    e.printStackTrace();
+                    address = "Connect to see full address";
+                }
+            } else {
+                Toast.makeText(context, "Connect to the Internet to See Street Name", Toast.LENGTH_LONG);
+                address = "Connect to see full address";
+            }
+            tAddress.setText(address);
+        }
     }
 
     private void initialize(View view) {

@@ -6,7 +6,7 @@ import android.content.DialogInterface;
 import android.widget.TimePicker;
 
 /**
- * Created by andela on 10/15/15.
+ * Created by wecking on 10/15/15.
  */
 public class CustomTimePickerDialog extends TimePickerDialog {
 

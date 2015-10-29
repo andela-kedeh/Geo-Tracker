@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Created by andela on 10/17/15.
+ * Created by wecking on 10/17/15.
  */
 public class Formater {
     public static String timeFormater(long longDate){

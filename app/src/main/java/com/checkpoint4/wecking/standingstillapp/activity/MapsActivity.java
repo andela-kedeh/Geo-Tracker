@@ -230,7 +230,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Calendar.getInstance().get(Calendar.HOUR),
                 CustomTimePickerDialog.getRoundedMinute(Calendar.getInstance().get(Calendar.MINUTE) +
                         CustomTimePickerDialog.TIME_PICKER_INTERVAL), true);
-        timePickerDialog.setTitle("Record Location Every ");
+        timePickerDialog.setTitle("Set Time To Record Location");
         timePickerDialog.show();
     }
 

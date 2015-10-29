@@ -17,7 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Created by andela on 10/13/15.
+ * Created by wecking on 10/13/15.
  */
 public class Location{
 

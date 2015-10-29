@@ -21,7 +21,7 @@ import java.util.Locale;
 
 
 /**
- * Created by andela on 10/9/15.
+ * Created by wecking on 10/9/15.
  */
 public class LocationDetector extends Service {
     private static final String TAG = "Location";

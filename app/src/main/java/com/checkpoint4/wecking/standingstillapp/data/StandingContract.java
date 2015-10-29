@@ -8,7 +8,7 @@ import android.provider.BaseColumns;
 import android.text.format.Time;
 
 /**
- * Created by andela on 10/6/15.
+ * Created by wecking on 10/6/15.
  */
 public class StandingContract {
 
