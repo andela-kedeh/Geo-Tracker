@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../app/app.iml" filepath="$PROJECT_DIR$/../app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../criminalintentsample/criminalintentsample.iml" filepath="$PROJECT_DIR$/../criminalintentsample/criminalintentsample.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../expandable-recycler-view-master.iml" filepath="$PROJECT_DIR$/../expandable-recycler-view-master.iml" />
+      <module fileurl="file://$PROJECT_DIR$/expandablerecyclerview.iml" filepath="$PROJECT_DIR$/expandablerecyclerview.iml" />
+    </modules>
+  </component>
+</project>
