@@ -29,14 +29,14 @@
 
         </android.support.design.widget.NavigationView>
 
-        <ListView
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/myRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/listView"
             android:layout_centerHorizontal="true"
             android:divider="@android:color/transparent"
             android:dividerHeight="5.0dp"
-            android:layout_marginTop="187dp"/>
+            android:layout_marginTop="190dp"/>
 
 
         </android.support.design.widget.NavigationView>
