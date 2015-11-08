@@ -2,4 +2,12 @@
     <string name="app_name">Geo Tracker</string>
     <string name="title_activity_maps">Geo Tracker</string>
     <string name="menu_settings">Settings</string>
+    <string name="about_the_app">Geo Tracker is a unique solution that provides you the capability of knowing the places you
+                                have been to while helping you browse through these locations in a fancy manner</string>
+    <string name="how_it_works">To start tracking, click on the "Start Tracking" button, when you are ready to stop tracking just
+                                click on "Stop Tracking" button. To set the time you have to spend at a particular location before location
+                                will be recorded, hold and drag the white circular button to set your desired time.</string>
+
+    <string name="view_tracking_history">To view tracking history click on the navigation bar at the top right corner.
+                                            Tracking history is sorted by date and location</string>
 </resources>
