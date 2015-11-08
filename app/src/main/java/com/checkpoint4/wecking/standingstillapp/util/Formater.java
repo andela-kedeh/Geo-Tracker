@@ -10,7 +10,7 @@ import java.util.Date;
 public class Formater {
     public static String timeFormater(long longDate){
         Date date = new Date(longDate);
-        DateFormat formatter = new SimpleDateFormat("HH:mm:ss:SSS");
+        DateFormat formatter = new SimpleDateFormat("HH:mm aa");
         String dateFormatted = formatter.format(date);
 
         return dateFormatted;
