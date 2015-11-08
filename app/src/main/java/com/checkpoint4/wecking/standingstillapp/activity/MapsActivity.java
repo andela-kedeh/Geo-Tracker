@@ -1,68 +1,66 @@
 package com.checkpoint4.wecking.standingstillapp.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.media.Image;
 import android.os.Build;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
 import com.checkpoint4.wecking.standingstillapp.Location.Constants;
 import com.checkpoint4.wecking.standingstillapp.Location.StandingService;
 import com.checkpoint4.wecking.standingstillapp.R;
-import com.checkpoint4.wecking.standingstillapp.model.Location;
-import com.checkpoint4.wecking.standingstillapp.ApplicationComponent.CallBack;
-import com.checkpoint4.wecking.standingstillapp.ApplicationComponent.CustomTimePickerDialog;
+import com.checkpoint4.wecking.standingstillapp.ApplicationComponent.CircleTimerView;
+import com.checkpoint4.wecking.standingstillapp.adapter.LocationByDateAdapter;
+import com.checkpoint4.wecking.standingstillapp.DataModel.StandingDBHelper;
+import com.checkpoint4.wecking.standingstillapp.adapter.LocationByDate;
+import com.checkpoint4.wecking.standingstillapp.DataModel.Location;
 import com.checkpoint4.wecking.standingstillapp.util.Formater;
-import com.checkpoint4.wecking.standingstillapp.adapter.ListLocationAdapter;
-import com.checkpoint4.wecking.standingstillapp.ApplicationComponent.SelectDateFragment;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import android.widget.ListView;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.lang.reflect.Field;
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, View.OnClickListener, PopupMenu.OnMenuItemClickListener {
+public class MapsActivity extends FragmentActivity implements  View.OnClickListener, CircleTimerView.CircleTimerListener{
 
-    private GoogleMap mMap;
     private String TAG = "MapsActivity";
-    private boolean timerHasStarted = false;
-    private ImageView playAndStop;
-    private ImageView clock;
-    private TextView dateSet;
     private DrawerLayout mDrawerLayout;
-    private ImageView headline, settings;
+    private ImageView headline;
+    private TextView stracking_status;
     private Location location;
     private String viewMapDate = Formater.formatDate(new Date().getTime());
-    private SupportMapFragment mapFragment;
-    private ListView locationList;
-    private ListLocationAdapter listLocation;
+    private LinearLayout Start_tracking;
     private NavigationView navigationView;
-    private ImageView datePicker;
+    private CircleTimerView circularTimerView;
+    private RecyclerView recyclerView;
+    private TextView how_to_use;
+    private ImageView start_icon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,41 +70,66 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         initialize();
         setOnClickListenner();
         loadListItem(true);
-        setTrackingTime();
-        startTracking();
     }
 
 
     private void initialize(){
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        playAndStop = (ImageView) findViewById(R.id.play);
-        clock = (ImageView) findViewById(R.id.clock);
-        datePicker = (ImageView) findViewById(R.id.date_picker);
-        dateSet = (TextView) findViewById(R.id.date);
-        dateSet.setText(Formater.formatDate(new Date().getTime()).toString());
-        mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
         headline = (ImageView) findViewById(R.id.view_headline);
         navigationView = (NavigationView) findViewById(R.id.nav_items);
         setupDrawerContent(navigationView);
-        locationList = (ListView) findViewById(R.id.listView);
-        settings = (ImageView) findViewById(R.id.settings);
+        circularTimerView = (CircleTimerView) findViewById(R.id.circularTimerView);
+        recyclerView = (RecyclerView) findViewById(R.id.myRecyclerView);
+        Start_tracking = (LinearLayout) findViewById(R.id.Start_tracking);
+        stracking_status = (TextView) findViewById(R.id.stracking_status);
+        how_to_use = (TextView) findViewById(R.id.how_to_use);
+        start_icon = (ImageView) findViewById(R.id.start_icon);
     }
 
     private void setOnClickListenner(){
-        playAndStop.setOnClickListener(this);
-        clock.setOnClickListener(this);
-        datePicker.setOnClickListener(this);
-        mapFragment.getMapAsync(this);
         headline.setOnClickListener(this);
         location = new Location(this);
-        settings.setOnClickListener(this);
+        circularTimerView.setOnClickListener(this);
+        Constants.circularTimerView = circularTimerView;
+        Start_tracking.setOnClickListener(this);
+        stracking_status.setOnClickListener(this);
+        how_to_use.setOnClickListener(this);
+        start_icon.setOnClickListener(this);
     }
 
     private void loadListItem(boolean isList) {
-        Cursor locationByDate = location.getLocationDataByDate(viewMapDate);
-        listLocation = new ListLocationAdapter(this, locationByDate, isList);
-        locationList.setAdapter(listLocation);
+        StandingDBHelper locationDb = new StandingDBHelper(MapsActivity.this);
+        List<ParentObject> parentObjects = new ArrayList<>();
+        ArrayList<String> dates = locationDb.getUniqueDates();
+        for (String date : dates) {
+            LocationByDate dateCount = new LocationByDate();
+            dateCount.date = date;
+            Cursor cursor1 = location.getLocationDataByDate(date.toString());
+            if(cursor1.moveToFirst()) {
+                do {
+                    ArrayList longLat = new ArrayList<String>();
+                    longLat.add("Latitude " + cursor1.getString(cursor1.getColumnIndex("coord_lat")) + " Longitude " + cursor1.getString(cursor1.getColumnIndex("coord_long")));
+                    dateCount.setChildObjectList(longLat);
+
+                    ArrayList timeSpent = new ArrayList<String>();
+                    timeSpent.add(" Spent " + Integer.parseInt(cursor1.getString(cursor1.getColumnIndex("standing_time")))/60  + "min ");
+                    dateCount.setTimeSpentObjectList(timeSpent);
+
+                    ArrayList interval = new ArrayList<String>();
+                    interval.add(" From " + cursor1.getString(cursor1.getColumnIndex("start_time")) +
+                            " To " + cursor1.getString(cursor1.getColumnIndex("stop_time")) +
+                            " Set Time " + cursor1.getString(cursor1.getColumnIndex("set_record_time")));
+                    dateCount.setIntervalObjectList(interval);
+                } while (cursor1.moveToNext());
+            }
+            parentObjects.add(dateCount);
+        }
+            LocationByDateAdapter adapter = new LocationByDateAdapter(MapsActivity.this, parentObjects);
+            adapter.setParentClickableViewAnimationDefaultDuration();
+            adapter.setParentAndIconExpandOnClick(true);
+            adapter.setCustomParentAnimationViewId(R.id.parent_list_item_expand_arrow);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+            recyclerView.setAdapter(adapter);
     }
 
     private void setVersionLayout(){
@@ -117,65 +140,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-
-        loadMap();
-    }
-
     private void loadMap(){
-        Cursor cursor = location.getLocationDataByDate(viewMapDate);
-        CameraUpdate cameraUpdate;
-        mMap.clear();
-        if(cursor.moveToFirst()){
-            do{
-                Double longitude = Double.parseDouble(cursor.getString(cursor.getColumnIndex("coord_lat")));
-                Double latitude = Double.parseDouble(cursor.getString(cursor.getColumnIndex("coord_long")));
-                LatLng sydney = new LatLng(longitude, latitude);
-                String address = " ";
-                try{
-                    address = Constants.getLocationAddress(longitude, latitude, 0, this) +
-                            " " + Constants.getLocationAddress(longitude, latitude, 1, this) +
-                            " " +Constants.getLocationAddress(longitude, latitude, 2, this);
-                } catch (Exception e){
-                    e.printStackTrace();
-                    Toast.makeText(this, "Connect to the Internet to See Street Name", Toast.LENGTH_LONG);
-                }
-                address = address + " Spent " + cursor.getString(cursor.getColumnIndex("standing_time")) + "min " +
-                        " From " + cursor.getString(cursor.getColumnIndex("start_time")) +
-                        " To " + cursor.getString(cursor.getColumnIndex("stop_time")) +
-                        " Set Time " + cursor.getString(cursor.getColumnIndex("set_record_time"));
-                MarkerOptions marker = new MarkerOptions().position(sydney).title(address);
-                mMap.addMarker(marker);
-                cameraUpdate = CameraUpdateFactory.newLatLngZoom(sydney, 8);
-                mMap.moveCamera(cameraUpdate);
-            }while (cursor.moveToNext());
-            mMap.animateCamera(cameraUpdate);
-        }else{
-            Toast.makeText(this, "For " + viewMapDate + " there is no location history", Toast.LENGTH_SHORT).show();
-        }
+        String address = Constants.getLocationAddress(2.4, 3.3, 0, this) +
+                " " + Constants.getLocationAddress(3.3, 33.3, 1, this) +
+                " " +Constants.getLocationAddress(3.3, 3.3, 2, this);
     }
-
-    private CustomTimePickerDialog.OnTimeSetListener timeSetListener = new CustomTimePickerDialog.OnTimeSetListener() {
-        @Override
-        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            Log.v(TAG, String.format("%d : %d", hourOfDay, minute));
-            Constants.interval = hourOfDay;
-        }
-    };
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.play:
+            case R.id.Start_tracking:
                 startTracking();
-                break;
-            case R.id.clock:
-                setTrackingTime();
-                break;
-            case R.id.date_picker:
-                selectDate();
                 break;
             case R.id.view_headline:
                 mDrawerLayout.openDrawer(GravityCompat.START);
@@ -183,14 +158,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             case R.id.settings:
                 showMenu(v);
                 break;
+            case R.id.how_to_use:
+                showHowToUse();
+                break;
+            case R.id.start_icon:
+                startTracking();
+                break;
+            case R.id.stracking_status:
+                startTracking();
+                break;
         }
     }
 
     public void showMenu(View v) {
         PopupMenu popup = new PopupMenu(this, v);
         popup.inflate(R.menu.settings);
-        popup.setOnMenuItemClickListener(this);
-
         // Force icons to show
         Object menuHelper;
         Class[] argTypes;
@@ -207,39 +189,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         popup.show();
     }
 
-    private void selectDate() {
-        DialogFragment newFragment = new SelectDateFragment(new CallBack() {
-            @Override
-            public void onFinished(int dd, int mm, int yy) {
-                String date = String.format("%d/%d/%d", dd, mm+1, yy);
-                viewMapDate = date;
-                loadMap();
-                dateSet.setText(date);
-                loadListItem(true);
-            }
-        });
-        newFragment.show(getSupportFragmentManager(), "DatePicker");
-    }
-
-    private void setTrackingTime() {
-        CustomTimePickerDialog timePickerDialog = new CustomTimePickerDialog(MapsActivity.this, timeSetListener,
-                Calendar.getInstance().get(Calendar.HOUR),
-                CustomTimePickerDialog.getRoundedMinute(Calendar.getInstance().get(Calendar.MINUTE) +
-                        CustomTimePickerDialog.TIME_PICKER_INTERVAL), true);
-        timePickerDialog.setTitle("Set Time To Record Location");
-        timePickerDialog.show();
-    }
 
     private void startTracking() {
-        if (timerHasStarted && StandingService.isRunning) {
-            stopService(new Intent(getBaseContext(), StandingService.class));
-            timerHasStarted = false;
-            playAndStop.setImageResource(R.drawable.play);
-        } else {
-            startService(new Intent(getBaseContext(), StandingService.class));
-            timerHasStarted = true;
-            playAndStop.setImageResource(R.drawable.stop);
+        try {
+            if (StandingService.isRunning) {
+                pause();
+            } else {
+                start();
+            }
+        }catch(Exception e){
+            e.printStackTrace();
         }
+    }
+
+    public void pause(){
+        stopService(new Intent(getBaseContext(), StandingService.class));
+        circularTimerView.pauseTimer();
+        stracking_status.setText("Start Tracking");
+        Start_tracking.setBackground(getResources().getDrawable(R.drawable.start_button_background));
+    }
+
+    public void start(){
+        startService(new Intent(getBaseContext(), StandingService.class));
+        circularTimerView.startTimer();
+        stracking_status.setText("Stop Tracking");
+        Start_tracking.setBackground(getResources().getDrawable(R.drawable.stop_button_background));
     }
 
     @Override
@@ -273,17 +247,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     @Override
-    public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.set_time:
-                setTrackingTime();
-                return true;
-            case R.id.pick_date:
-                selectDate();
-                return true;
-            default:
-                return false;
-        }
+    public void onTimerStop() {
+    }
+
+    @Override
+    public void onTimerStart(int time) {
+
+    }
+
+    @Override
+    public void onTimerPause(int time) {
+
+    }
+
+    private void showHowToUse() {
+        final LayoutInflater inflater = this.getLayoutInflater();
+        View view = inflater.inflate(R.layout.how_to_use, null);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this).setView(view);
+        builder.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+            }
+        }).setTitle("HOW IT WORKS");
+
+        builder.show();
     }
 
 }
