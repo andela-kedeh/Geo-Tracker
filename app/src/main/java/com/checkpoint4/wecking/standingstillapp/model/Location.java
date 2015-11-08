@@ -5,15 +5,12 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.checkpoint4.wecking.standingstillapp.Location.Constants;
 import com.checkpoint4.wecking.standingstillapp.data.StandingContract;
 import com.checkpoint4.wecking.standingstillapp.util.Formater;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -22,7 +19,6 @@ import java.util.Date;
 public class Location{
 
     private Context mContext;
-    private ContentValues values;
     private Uri uri;
     private ContentResolver resolver;
 

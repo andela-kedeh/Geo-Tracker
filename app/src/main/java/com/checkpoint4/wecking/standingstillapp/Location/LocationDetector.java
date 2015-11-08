@@ -3,8 +3,6 @@ package com.checkpoint4.wecking.standingstillapp.Location;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -14,11 +12,6 @@ import android.os.IBinder;
 import android.os.ResultReceiver;
 import android.support.annotation.Nullable;
 import android.util.Log;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
-
 
 /**
  * Created by wecking on 10/9/15.
@@ -48,7 +41,6 @@ public class LocationDetector extends Service {
         mlocListener = new MyLocationListener();
     }
 
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "Location Dectetor started");
@@ -64,9 +56,6 @@ public class LocationDetector extends Service {
         return super.onStartCommand(intent, flags, startId);
     }
 
-    /**
-     * Sends a resultCode and message to the receiver.
-     */
     private void deliverResultToReceiver(int resultCode, Location location) {
         Bundle bundle = new Bundle();
         Double latitude = location.getLatitude();
@@ -81,7 +70,6 @@ public class LocationDetector extends Service {
         }
     }
 
-
     private class MyLocationListener implements LocationListener{
 
         @Override
@@ -95,7 +83,6 @@ public class LocationDetector extends Service {
 
         @Override
         public void onProviderEnabled(String provider) {
-            Log.i(TAG, "location provider enabled");
         }
 
         @Override

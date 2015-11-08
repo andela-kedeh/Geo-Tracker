@@ -2,8 +2,6 @@ package com.checkpoint4.wecking.standingstillapp.activity;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.Build;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
@@ -26,7 +24,6 @@ import com.checkpoint4.wecking.standingstillapp.ApplicationComponent.CallBack;
 import com.checkpoint4.wecking.standingstillapp.ApplicationComponent.CustomTimePickerDialog;
 import com.checkpoint4.wecking.standingstillapp.util.Formater;
 import com.checkpoint4.wecking.standingstillapp.adapter.ListLocationAdapter;
-import com.checkpoint4.wecking.standingstillapp.util.NetworkUtil;
 import com.checkpoint4.wecking.standingstillapp.ApplicationComponent.SelectDateFragment;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -64,7 +61,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private SupportMapFragment mapFragment;
     private ListView locationList;
     private ListLocationAdapter listLocation;
-    private Cursor cursor;
     private NavigationView navigationView;
     private ImageView datePicker;
 
@@ -77,6 +73,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setOnClickListenner();
         loadListItem(true);
         setTrackingTime();
+        startTracking();
     }
 
 
@@ -129,7 +126,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void loadMap(){
         Cursor cursor = location.getLocationDataByDate(viewMapDate);
-        // Cycle through and display every row of data
         CameraUpdate cameraUpdate;
         mMap.clear();
         if(cursor.moveToFirst()){
@@ -291,4 +287,3 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 }
-
