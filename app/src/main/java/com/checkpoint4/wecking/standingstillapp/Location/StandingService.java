@@ -16,7 +16,9 @@ import android.os.ResultReceiver;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
 
-import com.checkpoint4.wecking.standingstillapp.model.Location;
+import com.checkpoint4.wecking.standingstillapp.ApplicationComponent.CircleTimerView;
+import com.checkpoint4.wecking.standingstillapp.DataModel.Location;
+import com.checkpoint4.wecking.standingstillapp.util.TimerSettings;
 
 import java.util.Date;
 
@@ -38,6 +40,7 @@ public class StandingService extends Service  implements SensorEventListener {
     private Date endTime;
     protected static final String TAG = "StandingService";
     private AddressResultReceiver mResultReceiver;
+    private TimerSettings setTime;
     public static boolean isRunning = false;
 
     int timeSpentInMinute;
@@ -59,6 +62,7 @@ public class StandingService extends Service  implements SensorEventListener {
         initialize();
         Toast.makeText(StandingService.this, "Tracking Started", Toast.LENGTH_SHORT).show();
         isRunning = true;
+        setTime = new TimerSettings(this);
         return START_STICKY;
     }
 
@@ -75,11 +79,15 @@ public class StandingService extends Service  implements SensorEventListener {
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER){
             try {
 
-                if (getGravity(event) > 6){
+                if (getGravity(event) > 3.5){
                     state = true;
-                    if(timeSpent() >= Constants.interval && mResultReceiver != null){
+                    if(timeSpent() >= setTime.getTimeSetting() && mResultReceiver != null){
                         locationNeeded = true;
                         startIntentService();
+                        CircleTimerView.currentRadian = setTime.getTimeSetting()/(double)573;
+                        Constants.circularTimerView.startTimer();
+                    }else{
+                        CircleTimerView.currentRadian = setTime.getTimeSetting()/(double)573;
                     }
                 } else{
                     // do something
@@ -116,7 +124,7 @@ public class StandingService extends Service  implements SensorEventListener {
             // Show a toast message if an address was found.
             if (resultCode == Constants.SUCCESS_RESULT && locationNeeded) {
                 new Location(getBaseContext().getApplicationContext()).insertLocation(timeSpentInMinute,
-                        startTime.getTime(), endTime.getTime(), Constants.interval,
+                        startTime.getTime(), endTime.getTime(), setTime.getTimeSetting(),
                         resultData.getDouble("latitude"), resultData.getDouble("longitude"));
                 locationNeeded = false;
                 locationDetector.stopSelf();
@@ -134,7 +142,6 @@ public class StandingService extends Service  implements SensorEventListener {
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-
         }
     };
 
