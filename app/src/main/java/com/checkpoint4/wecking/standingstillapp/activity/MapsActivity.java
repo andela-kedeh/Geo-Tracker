@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.media.Image;
 import android.os.Build;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
@@ -21,8 +20,8 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
-import com.checkpoint4.wecking.standingstillapp.Location.Constants;
-import com.checkpoint4.wecking.standingstillapp.Location.StandingService;
+import com.checkpoint4.wecking.standingstillapp.LocationServices.Constants;
+import com.checkpoint4.wecking.standingstillapp.LocationServices.StandingService;
 import com.checkpoint4.wecking.standingstillapp.R;
 import com.checkpoint4.wecking.standingstillapp.ApplicationComponent.CircleTimerView;
 import com.checkpoint4.wecking.standingstillapp.adapter.LocationByDateAdapter;
@@ -30,16 +29,10 @@ import com.checkpoint4.wecking.standingstillapp.DataModel.StandingDBHelper;
 import com.checkpoint4.wecking.standingstillapp.adapter.LocationByDate;
 import com.checkpoint4.wecking.standingstillapp.DataModel.Location;
 import com.checkpoint4.wecking.standingstillapp.util.Formater;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

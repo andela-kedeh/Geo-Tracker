@@ -1,4 +1,4 @@
-package com.checkpoint4.wecking.standingstillapp.Location;
+package com.checkpoint4.wecking.standingstillapp.LocationServices;
 
 import android.app.Service;
 import android.content.ComponentName;

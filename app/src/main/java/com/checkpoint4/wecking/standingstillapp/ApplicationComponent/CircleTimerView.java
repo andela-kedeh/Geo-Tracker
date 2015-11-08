@@ -14,7 +14,6 @@ import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.checkpoint4.wecking.standingstillapp.Location.Constants;
 import com.checkpoint4.wecking.standingstillapp.util.TimerSettings;
 
 import java.util.Timer;

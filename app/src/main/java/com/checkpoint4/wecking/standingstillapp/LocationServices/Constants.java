@@ -1,4 +1,4 @@
-package com.checkpoint4.wecking.standingstillapp.Location;
+package com.checkpoint4.wecking.standingstillapp.LocationServices;
 
 /**
  * Created by andela on 10/11/15.
@@ -6,13 +6,9 @@ package com.checkpoint4.wecking.standingstillapp.Location;
 
 import android.content.Context;
 import android.location.Address;
-import android.location.Criteria;
 import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationManager;
 
 import com.checkpoint4.wecking.standingstillapp.ApplicationComponent.CircleTimerView;
-import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
 import java.util.Locale;

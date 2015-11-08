@@ -58,9 +58,9 @@
             android:name=".DataModel.StandingProvider"
             android:exported="false"
             ></provider>
-        <service android:name=".Location.StandingService"
+        <service android:name=".LocationServices.StandingService"
             android:exported="false"/>
-        <service android:name=".Location.LocationDetector"
+        <service android:name=".LocationServices.LocationDetector"
             android:exported="false"/>
 
         <activity
