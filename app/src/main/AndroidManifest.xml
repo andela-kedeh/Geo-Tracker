@@ -32,14 +32,18 @@
              Note that the API key is linked to the encryption key used to sign the APK.
              You need a different API key for each encryption key, including the release key that is used to
              sign the APK for publishing.
-             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
+             You can define the keys for the debug and release targets in src/debug/ and src/release/.
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDHxwze1Y72O517karw3SAtFftV5vihC1c"/>
 
+        <!--<meta-data-->
+            <!--android:name="com.google.android.geo.API_KEY"-->
+            <!--android:value="AIzaSyAUM5SzcCiCficHFt5oAwqZWWsfajJ7m4M"/>-->
+
         <activity
-            android:name=".activity.MapsActivity"
+            android:name=".activity.SplashScreen"
             android:label="@string/title_activity_maps"
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait">
@@ -51,13 +55,20 @@
         </activity>
         <provider
             android:authorities="com.checkpoint.wecking.standingstillapp"
-            android:name=".data.StandingProvider"
+            android:name=".DataModel.StandingProvider"
             android:exported="false"
             ></provider>
         <service android:name=".Location.StandingService"
             android:exported="false"/>
         <service android:name=".Location.LocationDetector"
             android:exported="false"/>
+
+        <activity
+            android:name=".activity.MapsActivity"
+            android:label="@string/title_activity_maps"
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait">
+        </activity>
 
     </application>
 
