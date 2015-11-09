@@ -9,7 +9,7 @@ import android.preference.PreferenceManager;
  * Created by wecking on 11/4/15.
  */
 public class TimerSettings {
-    private static final int DEFAULT_TIME = 300;
+    private static int DEFAULT_TIME = 300;
     private SharedPreferences sharedPref;
     private Context activity;
 
@@ -20,11 +20,11 @@ public class TimerSettings {
 
     public void saveTimeSetting(int time) {
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putInt("", time);
+        editor.putInt("time", time);
         editor.apply();
     }
 
     public int getTimeSetting() {
-        return sharedPref.getInt("", DEFAULT_TIME);
+        return sharedPref.getInt("time", DEFAULT_TIME);
     }
 }

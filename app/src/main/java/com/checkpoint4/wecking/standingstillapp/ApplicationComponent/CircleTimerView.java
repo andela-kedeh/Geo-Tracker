@@ -23,6 +23,7 @@ public class CircleTimerView extends View
 {
     private static final String TAG = "CircleTimerView";
     public static boolean isTimerStarted = false;
+    private static TimerSettings timerSettings;
 
     // Status
     private static final String INSTANCE_STATUS = "instance_status";
@@ -120,9 +121,9 @@ public class CircleTimerView extends View
             }
             else
             {
-                currentRadian = 0.0;
-                timer.cancel();
-//                isTimerStarted = false;
+                currentRadian = Double.parseDouble(timerSettings.getTimeSetting()+"")/572.727272718;
+                timerTask.cancel();
+                isTimerStarted = false;
                 isStartTimer = false;
                 if (circleTimerListener != null)
                 {
@@ -140,7 +141,8 @@ public class CircleTimerView extends View
     {
         super(context, attrs, defStyleAttr);
         this.context = context;
-        currentRadian = new TimerSettings(context).getTimeSetting()/(9.5454545453 * 60);
+        timerSettings = new TimerSettings(context);
+        currentRadian = timerSettings.getTimeSetting()/(9.5454545453 * 60);
         initialize();
     }
 
@@ -148,7 +150,8 @@ public class CircleTimerView extends View
     {
         this(context, attrs, 0);
         this.context = context;
-        currentRadian = new TimerSettings(context).getTimeSetting()/(9.5454545453 * 60);
+        timerSettings = new TimerSettings(context);
+        currentRadian = timerSettings.getTimeSetting()/(9.5454545453 * 60);
     }
 
     public CircleTimerView(Context context)
@@ -452,7 +455,7 @@ public class CircleTimerView extends View
         {
             Log.v(TAG, "set time is " +currentTime);
             if(!isTimerStarted) {
-                new TimerSettings(context).saveTimeSetting(currentTime);
+                timerSettings.saveTimeSetting(currentTime);
             }
             timerTask = new TimerTask()
             {

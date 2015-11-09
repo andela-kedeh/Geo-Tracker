@@ -9,6 +9,7 @@ import android.location.Address;
 import android.location.Geocoder;
 
 import com.checkpoint4.wecking.standingstillapp.ApplicationComponent.CircleTimerView;
+import com.checkpoint4.wecking.standingstillapp.util.TimerSettings;
 
 import java.util.List;
 import java.util.Locale;
@@ -25,6 +26,7 @@ public final class Constants {
     public static final String RECEIVER = PACKAGE_NAME + ".StandingService";
 
     public static CircleTimerView circularTimerView;
+    public static TimerSettings timerSettings;
 
     public static String getLocationAddress(Double longitude, Double latitude, int addressId, Context context){
         Geocoder gcd = new Geocoder(context.getApplicationContext(), Locale.getDefault());

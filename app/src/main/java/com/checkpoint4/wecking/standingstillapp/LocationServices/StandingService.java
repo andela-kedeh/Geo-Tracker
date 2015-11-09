@@ -14,6 +14,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.ResultReceiver;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.checkpoint4.wecking.standingstillapp.ApplicationComponent.CircleTimerView;
@@ -84,10 +85,9 @@ public class StandingService extends Service  implements SensorEventListener {
                     if(timeSpent() >= setTime.getTimeSetting() && mResultReceiver != null){
                         locationNeeded = true;
                         startIntentService();
-                        CircleTimerView.currentRadian = setTime.getTimeSetting()/(double)573;
                         Constants.circularTimerView.startTimer();
                     }else{
-                        CircleTimerView.currentRadian = setTime.getTimeSetting()/(double)573;
+                        CircleTimerView.currentRadian = setTime.getTimeSetting()/572.727272718;
                     }
                 } else{
                     // do something
@@ -129,6 +129,8 @@ public class StandingService extends Service  implements SensorEventListener {
                 locationNeeded = false;
                 locationDetector.stopSelf();
             }
+
+            Log.v(TAG, setTime.getTimeSetting()+" set time");
         }
     }
 
@@ -181,7 +183,7 @@ public class StandingService extends Service  implements SensorEventListener {
     private int timeSpent() {
         endTime = new Date();
         long result = endTime.getTime() - startTime.getTime();
-        timeSpentInMinute = (int)(result/1000)/60;
+        timeSpentInMinute = (int)(result/1000);
         return timeSpentInMinute;
     }
 
