@@ -11,14 +11,10 @@ import java.util.List;
 public class LocationByDate implements ParentObject {
     public String date;
     private ArrayList childList;
-    private ArrayList timeSpent;
-    private ArrayList interval;
     public String time = null;
 
     public LocationByDate() {
         childList = new ArrayList();
-        timeSpent = new ArrayList<ArrayList<String>>();
-        interval = new ArrayList();
     }
 
     @Override
@@ -31,19 +27,4 @@ public class LocationByDate implements ParentObject {
         childList.add(list);
     }
 
-    public void setTimeSpentObjectList(List<Object> list){
-        timeSpent.add(list);
-    }
-
-    public List<Object> getTimeSpentObjectList(){
-        return timeSpent;
-    }
-
-    public void setIntervalObjectList(List<Object> list){
-        interval.add(list);
-    }
-
-    public List<Object> getIntervalObjectList(){
-        return interval;
-    }
 }
