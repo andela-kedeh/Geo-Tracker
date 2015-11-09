@@ -14,7 +14,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.ResultReceiver;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.checkpoint4.wecking.standingstillapp.ApplicationComponent.CircleTimerView;
@@ -44,7 +43,8 @@ public class StandingService extends Service  implements SensorEventListener {
     private TimerSettings setTime;
     public static boolean isRunning = false;
 
-    int timeSpentInMinute;
+    int time;
+    int timeSpent;
 
     LocationDetector locationDetector;
     boolean isBound = false;
@@ -82,9 +82,11 @@ public class StandingService extends Service  implements SensorEventListener {
 
                 if (getGravity(event) > 3.5){
                     state = true;
-                    if(timeSpent() >= setTime.getTimeSetting() && mResultReceiver != null){
+                    time = timeSpent();
+                    if(time >= setTime.getTimeSetting() && mResultReceiver != null){
                         locationNeeded = true;
                         startIntentService();
+                        timeSpent = time;
                         Constants.circularTimerView.startTimer();
                     }else{
                         CircleTimerView.currentRadian = setTime.getTimeSetting()/572.727272718;
@@ -125,7 +127,7 @@ public class StandingService extends Service  implements SensorEventListener {
             if (resultCode == Constants.SUCCESS_RESULT && locationNeeded) {
                 Double latitude = resultData.getDouble("latitude");
                 Double longitude = resultData.getDouble("longitude");
-                new Location(getBaseContext().getApplicationContext()).insertLocation(timeSpentInMinute,
+                new Location(getBaseContext().getApplicationContext()).insertLocation(timeSpent,
                         startTime.getTime(), endTime.getTime(), setTime.getTimeSetting(),
                         latitude, longitude, getAddress(longitude, latitude)
 
@@ -133,8 +135,6 @@ public class StandingService extends Service  implements SensorEventListener {
                 locationNeeded = false;
                 locationDetector.stopSelf();
             }
-
-            Log.v(TAG, setTime.getTimeSetting()+" set time");
         }
     }
 
@@ -187,8 +187,7 @@ public class StandingService extends Service  implements SensorEventListener {
     private int timeSpent() {
         endTime = new Date();
         long result = endTime.getTime() - startTime.getTime();
-        timeSpentInMinute = (int)(result/1000);
-        return timeSpentInMinute;
+        return (int)(result/1000);
     }
 
     private String getAddress(Double longitude, Double latitude){

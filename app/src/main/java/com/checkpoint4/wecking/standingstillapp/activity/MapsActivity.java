@@ -106,15 +106,14 @@ public class MapsActivity extends FragmentActivity implements  View.OnClickListe
                     int timeSpent = Integer.parseInt(cursor1.getString(cursor1.getColumnIndex("standing_time")));
                     int timeSpentInMunites = timeSpent/60;
                     int timeSpentInSeconds = timeSpent%60;
-                    locationChildData.timeSpent = (" Spent " + timeSpentInMunites + " munites : " + timeSpentInSeconds + " second");
+                    locationChildData.timeSpent = ("Spent " + timeSpentInMunites + " munites : " + timeSpentInSeconds + " second");
 
                     int timeSet = Integer.parseInt(cursor1.getString(cursor1.getColumnIndex("set_record_time")));
                     int timeSetInMunites = timeSet/60;
                     int timeSetInSeconds = timeSet%60;
                     Log.v(TAG, timeSet +" " + timeSpent);
-                    locationChildData.interval = (" From " + cursor1.getString(cursor1.getColumnIndex("start_time")) +
-                            " To " + cursor1.getString(cursor1.getColumnIndex("stop_time")));
-                    locationChildData.setTime = " Set Time " + timeSetInMunites + " munites : " + timeSetInSeconds + " second";
+                    locationChildData.interval = ("By " + cursor1.getString(cursor1.getColumnIndex("start_time")));
+                    locationChildData.setTime = "Set Time " + timeSetInMunites + " munites : " + timeSetInSeconds + " second";
                     longLat.add(locationChildData);
                     dateCount.setChildObjectList(longLat);
                 } while (cursor1.moveToNext());

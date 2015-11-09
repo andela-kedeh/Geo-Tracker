@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.checkpoint4.wecking.standingstillapp.DataModel.StandingContract;
 import com.checkpoint4.wecking.standingstillapp.util.Formater;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -33,21 +34,15 @@ public class Location{
         long time = new Date().getTime();
 
         values.put(StandingContract.StandingEntry.COLUMN_DATE, Formater.formatDate(time));
-        values.put(StandingContract.StandingEntry.COLUMN_START_TIME, Formater.timeFormater(startTime));
+        values.put(StandingContract.StandingEntry.COLUMN_START_TIME, new SimpleDateFormat("K:mm aa").format(startTime));
         values.put(StandingContract.StandingEntry.COLUMN_STOP_TIME, Formater.timeFormater(endTime));
         values.put(StandingContract.StandingEntry.COLUMN_STANDING_TIME, timeSpentInMinute);
         values.put(StandingContract.StandingEntry.COLUMN_SET_RECORD_TIME, timeSet);
-        Log.v("TAG", timeSet + " set time 2");
-        Log.v("TAG", Formater.timeFormater(endTime) + " set time 2");
-        Log.v("TAG", timeSpentInMinute + " set time 2");
-
 
         values.put(StandingContract.StandingEntry.COLUMN_COORD_LAT, latitude);
         values.put(StandingContract.StandingEntry.COLUMN_COORD_LONG, longitude);
         values.put(StandingContract.StandingEntry.COLUMN_ADDRESS, address);
-        Log.v("TAG", address);
         uri = mContext.getContentResolver().insert(StandingContract.StandingEntry.CONTENT_URI, values);
-        Log.v("Location", "Saved to db done");
         Toast.makeText(mContext, "New Location Recorded", Toast.LENGTH_LONG).show();
     }
 

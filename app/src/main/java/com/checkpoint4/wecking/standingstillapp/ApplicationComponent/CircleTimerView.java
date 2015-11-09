@@ -123,7 +123,7 @@ public class CircleTimerView extends View
             {
                 currentRadian = Double.parseDouble(timerSettings.getTimeSetting()+"")/572.727272718;
                 timerTask.cancel();
-                isTimerStarted = false;
+//                isTimerStarted = false;
                 isStartTimer = false;
                 if (circleTimerListener != null)
                 {
@@ -482,9 +482,9 @@ public class CircleTimerView extends View
     {
         if (isStartTimer)
         {
+            isTimerStarted = false;
             timerTask.cancel();
             isStartTimer = false;
-            isTimerStarted = false;
             if (this.circleTimerListener != null)
             {
                 this.circleTimerListener.onTimerPause(currentTime);

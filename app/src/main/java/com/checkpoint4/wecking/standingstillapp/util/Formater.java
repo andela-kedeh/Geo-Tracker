@@ -1,5 +1,7 @@
 package com.checkpoint4.wecking.standingstillapp.util;
 
+import android.util.Log;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -11,7 +13,8 @@ public class Formater {
     public static String timeFormater(long longDate){
         Date date = new Date(longDate);
         DateFormat formatter = new SimpleDateFormat("HH:mm aa");
-        String dateFormatted = formatter.format(date);
+        String dateFormatted = formatter.format(longDate);
+        Log.v("TAG", (new SimpleDateFormat("K:mm").format(longDate)) + new SimpleDateFormat("HH:mm aa").format(longDate));
 
         return dateFormatted;
     }
