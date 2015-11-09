@@ -1,13 +1,13 @@
 package com.checkpoint4.wecking.standingstillapp.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.bignerdranch.expandablerecyclerview.Adapter.ExpandableRecyclerAdapter;
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
+import com.checkpoint4.wecking.standingstillapp.DataModel.LocationByDate;
 import com.checkpoint4.wecking.standingstillapp.R;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.checkpoint4.wecking.standingstillapp.adapter;
+package com.checkpoint4.wecking.standingstillapp.DataModel;
 
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
 

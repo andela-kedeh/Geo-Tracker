@@ -3,7 +3,6 @@ package com.checkpoint4.wecking.standingstillapp.activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Build;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
@@ -14,22 +13,17 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
 import com.checkpoint4.wecking.standingstillapp.LocationServices.Constants;
 import com.checkpoint4.wecking.standingstillapp.LocationServices.StandingService;
 import com.checkpoint4.wecking.standingstillapp.R;
 import com.checkpoint4.wecking.standingstillapp.ApplicationComponent.CircleTimerView;
 import com.checkpoint4.wecking.standingstillapp.adapter.LocationByDateAdapter;
-import com.checkpoint4.wecking.standingstillapp.DataModel.StandingDBHelper;
-import com.checkpoint4.wecking.standingstillapp.adapter.LocationByDate;
 import com.checkpoint4.wecking.standingstillapp.DataModel.Location;
-import com.checkpoint4.wecking.standingstillapp.adapter.LocationChildData;
 
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
@@ -61,7 +55,7 @@ public class MapsActivity extends FragmentActivity implements  View.OnClickListe
         setVersionLayout();
         initialize();
         setOnClickListenner();
-        loadListItem();
+        loadLocationList(false);
     }
 
 
@@ -89,43 +83,19 @@ public class MapsActivity extends FragmentActivity implements  View.OnClickListe
         start_icon.setOnClickListener(this);
     }
 
-    private void loadListItem() {
-        StandingDBHelper locationDb = new StandingDBHelper(MapsActivity.this);
-        List<ParentObject> parentObjects = new ArrayList<>();
-        ArrayList<String> dates = locationDb.getUniqueDates();
-        for (String date : dates) {
-            LocationByDate dateCount = new LocationByDate();
-            dateCount.date = date;
-            Cursor cursor1 = location.getLocationDataByDate(date.toString());
-            if(cursor1.moveToFirst()) {
-                do {
-                    LocationChildData locationChildData = new LocationChildData();
-                    ArrayList longLat = new ArrayList<String>();
-                    locationChildData.address = cursor1.getString(cursor1.getColumnIndex("address"));
-                    locationChildData.longLat = ("Latitude " + cursor1.getString(cursor1.getColumnIndex("coord_lat")) + " Longitude " + cursor1.getString(cursor1.getColumnIndex("coord_long")));
-                    int timeSpent = Integer.parseInt(cursor1.getString(cursor1.getColumnIndex("standing_time")));
-                    int timeSpentInMunites = timeSpent/60;
-                    int timeSpentInSeconds = timeSpent%60;
-                    locationChildData.timeSpent = ("Spent " + timeSpentInMunites + " munites : " + timeSpentInSeconds + " second");
-
-                    int timeSet = Integer.parseInt(cursor1.getString(cursor1.getColumnIndex("set_record_time")));
-                    int timeSetInMunites = timeSet/60;
-                    int timeSetInSeconds = timeSet%60;
-                    Log.v(TAG, timeSet +" " + timeSpent);
-                    locationChildData.interval = ("By " + cursor1.getString(cursor1.getColumnIndex("start_time")));
-                    locationChildData.setTime = "Set Time " + timeSetInMunites + " munites : " + timeSetInSeconds + " second";
-                    longLat.add(locationChildData);
-                    dateCount.setChildObjectList(longLat);
-                } while (cursor1.moveToNext());
-            }
-            parentObjects.add(dateCount);
+    private void loadLocationList(boolean isDate) {
+        List locationData = null;
+        if(isDate)
+            locationData = location.getLocationDataByDate();
+        else {
+            locationData = location.getLocationData();
         }
-            LocationByDateAdapter adapter = new LocationByDateAdapter(MapsActivity.this, parentObjects);
-            adapter.setParentClickableViewAnimationDefaultDuration();
-            adapter.setParentAndIconExpandOnClick(true);
-            adapter.setCustomParentAnimationViewId(R.id.parent_list_item_expand_arrow);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-            recyclerView.setAdapter(adapter);
+        LocationByDateAdapter adapter = new LocationByDateAdapter(MapsActivity.this, locationData);
+        adapter.setParentClickableViewAnimationDefaultDuration();
+        adapter.setParentAndIconExpandOnClick(true);
+        adapter.setCustomParentAnimationViewId(R.id.parent_list_item_expand_arrow);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        recyclerView.setAdapter(adapter);
     }
 
     private void setVersionLayout(){
@@ -226,11 +196,11 @@ public class MapsActivity extends FragmentActivity implements  View.OnClickListe
         // Create a new fragment and specify the planet to show based on
         // position
         switch (menuItem.getItemId()) {
-            case R.id.nav_home:
-                loadListItem();
+            case R.id.byDay:
+                loadLocationList(true);
                 break;
-            case R.id.nav_group:
-                loadListItem();
+            case R.id.byLocation:
+                loadLocationList(false);
                 break;
         }
 

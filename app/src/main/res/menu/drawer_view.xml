@@ -3,11 +3,11 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_home"
+            android:id="@+id/byDay"
             android:icon="@drawable/ic_my_location_white_24dp"
             android:title="List By Date" />
         <item
-            android:id="@+id/nav_group"
+            android:id="@+id/byLocation"
             android:icon="@drawable/ic_my_location_white_24dp"
             android:title="Group By Location" />
     </group>
