@@ -1,6 +1,7 @@
 package com.checkpoint4.wecking.standingstillapp.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +18,12 @@ import java.util.List;
  */
 public class LocationByDateAdapter extends ExpandableRecyclerAdapter<LocationDateViewHolder, LocationDateChildViewHolder> {
     private LayoutInflater inflater;
-    private int count;
     List<ParentObject> data;
     public LocationByDateAdapter(Context context, List<ParentObject> parentItemList) {
         super(context, parentItemList);
         inflater = LayoutInflater.from(context);
         data = parentItemList;
+
     }
 
     @Override
@@ -47,11 +48,10 @@ public class LocationByDateAdapter extends ExpandableRecyclerAdapter<LocationDat
 
     @Override
     public void onBindChildViewHolder(LocationDateChildViewHolder locationDateChildViewHolder, int i, Object childObject) {
-        ArrayList<String> child = (ArrayList) childObject;
-        locationDateChildViewHolder.lonLat.setText(child.get(0));
-        LocationByDate locationByDate = (LocationByDate) data.get(0);
-        locationDateChildViewHolder.timeSpent.setText(locationByDate.getTimeSpentObjectList().get(0).toString());
-        locationDateChildViewHolder.interval.setText(locationByDate.getIntervalObjectList().get(0).toString());
-        count++;
+        ArrayList child = (ArrayList) childObject;
+        LocationChildData locationChildData = (LocationChildData) child.get(0);
+        locationDateChildViewHolder.lonLat.setText(locationChildData.longLat);
+        locationDateChildViewHolder.timeSpent.setText(locationChildData.timeSpent);
+        locationDateChildViewHolder.interval.setText(locationChildData.interval);
     }
 }

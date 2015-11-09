@@ -28,6 +28,7 @@ import com.checkpoint4.wecking.standingstillapp.adapter.LocationByDateAdapter;
 import com.checkpoint4.wecking.standingstillapp.DataModel.StandingDBHelper;
 import com.checkpoint4.wecking.standingstillapp.adapter.LocationByDate;
 import com.checkpoint4.wecking.standingstillapp.DataModel.Location;
+import com.checkpoint4.wecking.standingstillapp.adapter.LocationChildData;
 import com.checkpoint4.wecking.standingstillapp.util.Formater;
 
 import android.widget.LinearLayout;
@@ -36,7 +37,6 @@ import android.widget.TextView;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 
@@ -47,7 +47,6 @@ public class MapsActivity extends FragmentActivity implements  View.OnClickListe
     private ImageView headline;
     private TextView stracking_status;
     private Location location;
-    private String viewMapDate = Formater.formatDate(new Date().getTime());
     private LinearLayout Start_tracking;
     private NavigationView navigationView;
     private CircleTimerView circularTimerView;
@@ -62,7 +61,7 @@ public class MapsActivity extends FragmentActivity implements  View.OnClickListe
         setVersionLayout();
         initialize();
         setOnClickListenner();
-        loadListItem(true);
+        loadListItem();
     }
 
 
@@ -90,7 +89,7 @@ public class MapsActivity extends FragmentActivity implements  View.OnClickListe
         start_icon.setOnClickListener(this);
     }
 
-    private void loadListItem(boolean isList) {
+    private void loadListItem() {
         StandingDBHelper locationDb = new StandingDBHelper(MapsActivity.this);
         List<ParentObject> parentObjects = new ArrayList<>();
         ArrayList<String> dates = locationDb.getUniqueDates();
@@ -100,19 +99,15 @@ public class MapsActivity extends FragmentActivity implements  View.OnClickListe
             Cursor cursor1 = location.getLocationDataByDate(date.toString());
             if(cursor1.moveToFirst()) {
                 do {
+                    LocationChildData locationChildData = new LocationChildData();
                     ArrayList longLat = new ArrayList<String>();
-                    longLat.add("Latitude " + cursor1.getString(cursor1.getColumnIndex("coord_lat")) + " Longitude " + cursor1.getString(cursor1.getColumnIndex("coord_long")));
-                    dateCount.setChildObjectList(longLat);
-
-                    ArrayList timeSpent = new ArrayList<String>();
-                    timeSpent.add(" Spent " + Integer.parseInt(cursor1.getString(cursor1.getColumnIndex("standing_time")))/60  + "min ");
-                    dateCount.setTimeSpentObjectList(timeSpent);
-
-                    ArrayList interval = new ArrayList<String>();
-                    interval.add(" From " + cursor1.getString(cursor1.getColumnIndex("start_time")) +
+                    locationChildData.longLat = ("Latitude " + cursor1.getString(cursor1.getColumnIndex("coord_lat")) + " Longitude " + cursor1.getString(cursor1.getColumnIndex("coord_long")));
+                    locationChildData.timeSpent = (" Spent " + Integer.parseInt(cursor1.getString(cursor1.getColumnIndex("standing_time")))  + " min ");
+                    locationChildData.interval = (" From " + cursor1.getString(cursor1.getColumnIndex("start_time")) +
                             " To " + cursor1.getString(cursor1.getColumnIndex("stop_time")) +
                             " Set Time " + cursor1.getString(cursor1.getColumnIndex("set_record_time")));
-                    dateCount.setIntervalObjectList(interval);
+                    longLat.add(locationChildData);
+                    dateCount.setChildObjectList(longLat);
                 } while (cursor1.moveToNext());
             }
             parentObjects.add(dateCount);
@@ -197,16 +192,16 @@ public class MapsActivity extends FragmentActivity implements  View.OnClickListe
 
     public void pause(){
         stopService(new Intent(getBaseContext(), StandingService.class));
-        circularTimerView.pauseTimer();
         stracking_status.setText("Start Tracking");
         Start_tracking.setBackground(getResources().getDrawable(R.drawable.start_button_background));
+        circularTimerView.pauseTimer();
     }
 
     public void start(){
         startService(new Intent(getBaseContext(), StandingService.class));
-        circularTimerView.startTimer();
         stracking_status.setText("Stop Tracking");
         Start_tracking.setBackground(getResources().getDrawable(R.drawable.stop_button_background));
+        circularTimerView.startTimer();
     }
 
     @Override
@@ -230,10 +225,10 @@ public class MapsActivity extends FragmentActivity implements  View.OnClickListe
         // position
         switch (menuItem.getItemId()) {
             case R.id.nav_home:
-                loadListItem(true);
+                loadListItem();
                 break;
             case R.id.nav_group:
-                loadListItem(false);
+                loadListItem();
                 break;
         }
 

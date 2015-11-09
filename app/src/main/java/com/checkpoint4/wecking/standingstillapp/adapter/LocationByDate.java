@@ -2,7 +2,6 @@ package com.checkpoint4.wecking.standingstillapp.adapter;
 
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,13 +11,14 @@ import java.util.List;
 public class LocationByDate implements ParentObject {
     public String date;
     private ArrayList childList;
-    private ArrayList longLat;
+    private ArrayList timeSpent;
     private ArrayList interval;
+    public String time = null;
 
     public LocationByDate() {
-        childList = new ArrayList<String>();
-        longLat = new ArrayList<String>();
-        interval = new ArrayList<String>();
+        childList = new ArrayList();
+        timeSpent = new ArrayList<ArrayList<String>>();
+        interval = new ArrayList();
     }
 
     @Override
@@ -32,11 +32,11 @@ public class LocationByDate implements ParentObject {
     }
 
     public void setTimeSpentObjectList(List<Object> list){
-        longLat.add(list);
+        timeSpent.add(list);
     }
 
     public List<Object> getTimeSpentObjectList(){
-        return longLat;
+        return timeSpent;
     }
 
     public void setIntervalObjectList(List<Object> list){

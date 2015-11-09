@@ -37,6 +37,10 @@ public class Location{
         values.put(StandingContract.StandingEntry.COLUMN_STOP_TIME, Formater.timeFormater(endTime));
         values.put(StandingContract.StandingEntry.COLUMN_STANDING_TIME, timeSpentInMinute);
         values.put(StandingContract.StandingEntry.COLUMN_SET_RECORD_TIME, timeSet);
+        Log.v("TAG", timeSet + " set time 2");
+        Log.v("TAG", Formater.timeFormater(endTime) + " set time 2");
+        Log.v("TAG", timeSpentInMinute + " set time 2");
+
 
         values.put(StandingContract.StandingEntry.COLUMN_COORD_LAT, latitude);
         values.put(StandingContract.StandingEntry.COLUMN_COORD_LONG, longitude);
