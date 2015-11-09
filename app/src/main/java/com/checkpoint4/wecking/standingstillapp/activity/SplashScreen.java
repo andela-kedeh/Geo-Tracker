@@ -30,6 +30,7 @@ public class SplashScreen extends AppCompatActivity{
         loading();
     }
 
+
     private void initialise() {
         ImageView rotate_image =(ImageView) findViewById(R.id.imgLogo);
         RotateAnimation rotate = new RotateAnimation(30, 360, Animation.RELATIVE_TO_SELF, 0.5f,  Animation.RELATIVE_TO_SELF, 0.5f);
@@ -52,5 +53,6 @@ public class SplashScreen extends AppCompatActivity{
         };
         timerThread.start();
     }
+
 }
 

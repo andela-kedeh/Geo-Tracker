@@ -27,10 +27,35 @@
                 android:layout_marginLeft="8dp"/>
 
             <TextView
+                android:id="@+id/address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/location_icon"
+                android:ellipsize="end"
+                android:textSize="10dp"
+                android:maxLines="1"
+                android:scrollHorizontally="true"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textStyle="italic"/>
+
+            <TextView
+                android:id="@+id/set_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/location_icon"
+                android:layout_below="@+id/address"
+                android:ellipsize="end"
+                android:textSize="10dp"
+                android:maxLines="1"
+                android:scrollHorizontally="true"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textStyle="italic"/>
+
+            <TextView
                 android:id="@+id/time_spent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/date"
+                android:layout_below="@+id/set_time"
                 android:layout_toRightOf="@+id/location_icon"
                 android:ellipsize="end"
                 android:textSize="10dp"

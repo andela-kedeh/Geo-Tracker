@@ -14,6 +14,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,7 +30,6 @@ import com.checkpoint4.wecking.standingstillapp.DataModel.StandingDBHelper;
 import com.checkpoint4.wecking.standingstillapp.adapter.LocationByDate;
 import com.checkpoint4.wecking.standingstillapp.DataModel.Location;
 import com.checkpoint4.wecking.standingstillapp.adapter.LocationChildData;
-import com.checkpoint4.wecking.standingstillapp.util.Formater;
 
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
@@ -101,11 +101,20 @@ public class MapsActivity extends FragmentActivity implements  View.OnClickListe
                 do {
                     LocationChildData locationChildData = new LocationChildData();
                     ArrayList longLat = new ArrayList<String>();
+                    locationChildData.address = cursor1.getString(cursor1.getColumnIndex("address"));
                     locationChildData.longLat = ("Latitude " + cursor1.getString(cursor1.getColumnIndex("coord_lat")) + " Longitude " + cursor1.getString(cursor1.getColumnIndex("coord_long")));
-                    locationChildData.timeSpent = (" Spent " + Integer.parseInt(cursor1.getString(cursor1.getColumnIndex("standing_time")))  + " min ");
+                    int timeSpent = Integer.parseInt(cursor1.getString(cursor1.getColumnIndex("standing_time")));
+                    int timeSpentInMunites = timeSpent/60;
+                    int timeSpentInSeconds = timeSpent%60;
+                    locationChildData.timeSpent = (" Spent " + timeSpentInMunites + " munites : " + timeSpentInSeconds + " second");
+
+                    int timeSet = Integer.parseInt(cursor1.getString(cursor1.getColumnIndex("set_record_time")));
+                    int timeSetInMunites = timeSet/60;
+                    int timeSetInSeconds = timeSet%60;
+                    Log.v(TAG, timeSet +" " + timeSpent);
                     locationChildData.interval = (" From " + cursor1.getString(cursor1.getColumnIndex("start_time")) +
-                            " To " + cursor1.getString(cursor1.getColumnIndex("stop_time")) +
-                            " Set Time " + cursor1.getString(cursor1.getColumnIndex("set_record_time")));
+                            " To " + cursor1.getString(cursor1.getColumnIndex("stop_time")));
+                    locationChildData.setTime = " Set Time " + timeSetInMunites + " munites : " + timeSetInSeconds + " second";
                     longLat.add(locationChildData);
                     dateCount.setChildObjectList(longLat);
                 } while (cursor1.moveToNext());
@@ -126,12 +135,6 @@ public class MapsActivity extends FragmentActivity implements  View.OnClickListe
             CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams)toolbar.getLayoutParams();
             params.setMargins(0, 70, 0, 0);
         }
-    }
-
-    private void loadMap(){
-        String address = Constants.getLocationAddress(2.4, 3.3, 0, this) +
-                " " + Constants.getLocationAddress(3.3, 33.3, 1, this) +
-                " " +Constants.getLocationAddress(3.3, 3.3, 2, this);
     }
 
     @Override

@@ -35,6 +35,7 @@ public class StandingContract {
         public static final String COLUMN_STOP_TIME = "stop_time";
         public static final String COLUMN_STANDING_TIME = "standing_time";
         public static final String COLUMN_SET_RECORD_TIME = "set_record_time";
+        public static final String COLUMN_ADDRESS = "address";
 
         public static final String COLUMN_COORD_LAT = "coord_lat";
         public static final String COLUMN_COORD_LONG = "coord_long";

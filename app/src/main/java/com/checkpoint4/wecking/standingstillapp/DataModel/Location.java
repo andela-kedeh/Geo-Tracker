@@ -28,7 +28,7 @@ public class Location{
         resolver = context.getContentResolver();
     }
 
-    public void insertLocation(long timeSpentInMinute, long startTime, long endTime, int timeSet, Double latitude, Double longitude){
+    public void insertLocation(long timeSpentInMinute, long startTime, long endTime, int timeSet, Double latitude, Double longitude, String address){
         ContentValues values = new ContentValues();
         long time = new Date().getTime();
 
@@ -44,6 +44,8 @@ public class Location{
 
         values.put(StandingContract.StandingEntry.COLUMN_COORD_LAT, latitude);
         values.put(StandingContract.StandingEntry.COLUMN_COORD_LONG, longitude);
+        values.put(StandingContract.StandingEntry.COLUMN_ADDRESS, address);
+        Log.v("TAG", address);
         uri = mContext.getContentResolver().insert(StandingContract.StandingEntry.CONTENT_URI, values);
         Log.v("Location", "Saved to db done");
         Toast.makeText(mContext, "New Location Recorded", Toast.LENGTH_LONG).show();
@@ -52,7 +54,7 @@ public class Location{
     public Cursor getLocationDataByDate(String date){
         // Projection contains the columns we want
         String[] projection = new String[]{"coord_lat", "coord_long", "date",
-                "start_time", "stop_time", "standing_time", "set_record_time", "_id"};
+                "start_time", "stop_time", "standing_time", "set_record_time", "_id", "address"};
         String[] selectionDate = {date};
         // Pass the URL, projection and I'll cover the other options below
         return resolver.query(StandingContract.StandingEntry.CONTENT_URI, projection, "date = ? ", selectionDate, null);

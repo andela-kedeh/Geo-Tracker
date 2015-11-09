@@ -123,9 +123,13 @@ public class StandingService extends Service  implements SensorEventListener {
         protected void onReceiveResult(int resultCode, Bundle resultData) {
             // Show a toast message if an address was found.
             if (resultCode == Constants.SUCCESS_RESULT && locationNeeded) {
+                Double latitude = resultData.getDouble("latitude");
+                Double longitude = resultData.getDouble("longitude");
                 new Location(getBaseContext().getApplicationContext()).insertLocation(timeSpentInMinute,
                         startTime.getTime(), endTime.getTime(), setTime.getTimeSetting(),
-                        resultData.getDouble("latitude"), resultData.getDouble("longitude"));
+                        latitude, longitude, getAddress(longitude, latitude)
+
+                );
                 locationNeeded = false;
                 locationDetector.stopSelf();
             }
@@ -185,6 +189,12 @@ public class StandingService extends Service  implements SensorEventListener {
         long result = endTime.getTime() - startTime.getTime();
         timeSpentInMinute = (int)(result/1000);
         return timeSpentInMinute;
+    }
+
+    private String getAddress(Double longitude, Double latitude){
+        return Constants.getLocationAddress(longitude, latitude, 0, this) +
+                " " + Constants.getLocationAddress(longitude, latitude, 1, this) +
+                " " +Constants.getLocationAddress(longitude, latitude, 2, this);
     }
 
 }

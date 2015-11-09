@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public class StandingDBHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 8;
 
     static final String DATABASE_NAME = "Location.db";
 
@@ -30,6 +30,7 @@ public class StandingDBHelper extends SQLiteOpenHelper {
                 StandingContract.StandingEntry.COLUMN_DATE + " TEXT NOT NULL," +
                 StandingContract.StandingEntry.COLUMN_START_TIME + " TEXT NOT NULL," +
                 StandingContract.StandingEntry.COLUMN_STOP_TIME + " TEXT NOT NULL," +
+                StandingContract.StandingEntry.COLUMN_ADDRESS + " TEXT NOT NULL," +
                 StandingContract.StandingEntry.COLUMN_STANDING_TIME + " REAL NOT NULL," +
                 StandingContract.StandingEntry.COLUMN_SET_RECORD_TIME + " REAL NOT NULL," +
 

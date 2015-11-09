@@ -53,5 +53,7 @@ public class LocationByDateAdapter extends ExpandableRecyclerAdapter<LocationDat
         locationDateChildViewHolder.lonLat.setText(locationChildData.longLat);
         locationDateChildViewHolder.timeSpent.setText(locationChildData.timeSpent);
         locationDateChildViewHolder.interval.setText(locationChildData.interval);
+        locationDateChildViewHolder.address.setText(locationChildData.address);
+        locationDateChildViewHolder.setTime.setText(locationChildData.setTime);
     }
 }
