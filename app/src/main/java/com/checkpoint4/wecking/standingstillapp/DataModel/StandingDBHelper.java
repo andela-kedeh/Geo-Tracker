@@ -48,36 +48,4 @@ public class StandingDBHelper extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
     }
 
-    public ArrayList<String> getUniqueDates() {
-        ArrayList dates = new ArrayList<String>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        try {
-            Cursor cursor = db.query(true, StandingContract.StandingEntry.TABLE_NAME, new String[]{StandingContract.StandingEntry.COLUMN_DATE}, null, null, StandingContract.StandingEntry.COLUMN_DATE, null, null, null);
-            while (cursor.moveToNext()) {
-                dates.add(cursor.getString(cursor.getColumnIndex(StandingContract.StandingEntry.COLUMN_DATE)));
-                Log.v("TAG", cursor.getString(cursor.getColumnIndex(StandingContract.StandingEntry.COLUMN_DATE)));
-            }
-            cursor.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return dates;
-    }
-
-    public ArrayList<String> getUniquelocation() {
-        ArrayList locations = new ArrayList<String>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        try {
-            Cursor cursor = db.query(true, StandingContract.StandingEntry.TABLE_NAME, new String[]{StandingContract.StandingEntry.COLUMN_ADDRESS}, null, null, StandingContract.StandingEntry.COLUMN_ADDRESS, null, null, null);
-            while (cursor.moveToNext()) {
-                locations.add(cursor.getString(cursor.getColumnIndex(StandingContract.StandingEntry.COLUMN_ADDRESS)));
-                Log.v("TAG", cursor.getString(cursor.getColumnIndex(StandingContract.StandingEntry.COLUMN_ADDRESS)));
-            }
-            cursor.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return locations;
-    }
-
 }

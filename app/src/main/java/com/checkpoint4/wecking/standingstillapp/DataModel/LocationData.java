@@ -8,12 +8,12 @@ import java.util.List;
 /**
  * Created by andela on 10/18/15.
  */
-public class LocationByDate implements ParentObject {
+public class LocationData implements ParentObject {
     public String date;
     private ArrayList childList;
     public String time = null;
 
-    public LocationByDate() {
+    public LocationData() {
         childList = new ArrayList();
     }
 

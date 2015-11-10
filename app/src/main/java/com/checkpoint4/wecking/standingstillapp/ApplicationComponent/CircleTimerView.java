@@ -125,17 +125,13 @@ public class CircleTimerView extends View
                 timerTask.cancel();
 //                isTimerStarted = false;
                 isStartTimer = false;
-                if (circleTimerListener != null)
-                {
-                    circleTimerListener.onTimerStop();
-                }
+
             }
             invalidate();
         }
     };
 
     // Runt
-    private CircleTimerListener circleTimerListener;
 
     public CircleTimerView(Context context, AttributeSet attrs, int defStyleAttr)
     {
@@ -469,10 +465,6 @@ public class CircleTimerView extends View
             timer.schedule(timerTask, 1000, 1000);
             isStartTimer = true;
             isTimerStarted = true;
-            if (this.circleTimerListener != null)
-            {
-                this.circleTimerListener.onTimerStart(currentTime);
-            }
         }
 
     }
@@ -485,27 +477,9 @@ public class CircleTimerView extends View
             isTimerStarted = false;
             timerTask.cancel();
             isStartTimer = false;
-            if (this.circleTimerListener != null)
-            {
-                this.circleTimerListener.onTimerPause(currentTime);
-            }
         }
     }
 
-    // Set timer listener
-    public void setCircleTimerListener(CircleTimerListener circleTimerListener)
-    {
-        this.circleTimerListener = circleTimerListener;
-    }
-
-    public interface CircleTimerListener
-    {
-        void onTimerStop();
-
-        void onTimerStart(int time);
-
-        void onTimerPause(int time);
-    }
 
     public int getCurrentTime()
     {

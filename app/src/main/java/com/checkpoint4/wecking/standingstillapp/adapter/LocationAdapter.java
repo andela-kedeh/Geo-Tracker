@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 
 import com.bignerdranch.expandablerecyclerview.Adapter.ExpandableRecyclerAdapter;
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
-import com.checkpoint4.wecking.standingstillapp.DataModel.LocationByDate;
+import com.checkpoint4.wecking.standingstillapp.DataModel.LocationData;
 import com.checkpoint4.wecking.standingstillapp.R;
 
 import java.util.ArrayList;
@@ -41,19 +41,19 @@ public class LocationAdapter extends ExpandableRecyclerAdapter<LocationViewHolde
     }
 
     @Override
-    public void onBindParentViewHolder(LocationViewHolder locationDateViewHolder, int i, Object parentObject) {
-        LocationByDate location = (LocationByDate) parentObject;
-        locationDateViewHolder.date.setText(location.date);
+    public void onBindParentViewHolder(LocationViewHolder locationViewHolder, int i, Object parentObject) {
+        LocationData location = (LocationData) parentObject;
+        locationViewHolder.date.setText(location.date);
     }
 
     @Override
-    public void onBindChildViewHolder(LocationChildViewHolder locationDateChildViewHolder, int i, Object childObject) {
+    public void onBindChildViewHolder(LocationChildViewHolder locationChildViewHolder, int i, Object childObject) {
         ArrayList child = (ArrayList) childObject;
         LocationChildData locationChildData = (LocationChildData) child.get(0);
-        locationDateChildViewHolder.lonLat.setText(locationChildData.longLat);
-        locationDateChildViewHolder.timeSpent.setText(locationChildData.timeSpent);
-        locationDateChildViewHolder.interval.setText(locationChildData.interval);
-        locationDateChildViewHolder.address.setText(locationChildData.address);
-        locationDateChildViewHolder.setTime.setText(locationChildData.setTime);
+        locationChildViewHolder.lonLat.setText(locationChildData.longLat);
+        locationChildViewHolder.timeSpent.setText(locationChildData.timeSpent);
+        locationChildViewHolder.interval.setText(locationChildData.interval);
+        locationChildViewHolder.address.setText(locationChildData.address);
+        locationChildViewHolder.setTime.setText(locationChildData.setTime);
     }
 }

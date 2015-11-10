@@ -32,7 +32,7 @@ import android.widget.TextView;
 import java.lang.reflect.Field;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements  View.OnClickListener, CircleTimerView.CircleTimerListener{
+public class MainActivity extends AppCompatActivity implements  View.OnClickListener{
 
     private String TAG = "MainActivity";
     private DrawerLayout mDrawerLayout;
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
         if(isDate)
             locationData = location.getLocationDataByDate();
         else {
-            locationData = location.getLocationData();
+            locationData = location.getLocationDataLocation();
         }
         LocationAdapter adapter = new LocationAdapter(MainActivity.this, locationData);
         adapter.setParentClickableViewAnimationDefaultDuration();
@@ -204,19 +204,6 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
 
     }
 
-    @Override
-    public void onTimerStop() {
-    }
-
-    @Override
-    public void onTimerStart(int time) {
-
-    }
-
-    @Override
-    public void onTimerPause(int time) {
-
-    }
 
     private void showHowToUse() {
         final LayoutInflater inflater = this.getLayoutInflater();

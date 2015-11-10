@@ -14,7 +14,6 @@ public class SplashScreen extends AppCompatActivity{
     private String TAG = "SplashScreen";
 	private LocationManager locationManager;
 
-	private String provider;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

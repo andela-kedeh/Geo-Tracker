@@ -4,7 +4,9 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
@@ -22,13 +24,17 @@ import java.util.List;
 public class Location{
 
     private Context mContext;
+    private StandingDBHelper locationDb;
     private Uri uri;
     private ContentResolver resolver;
+    private String[] projection = new String[]{"coord_lat", "coord_long", "date",
+            "start_time", "stop_time", "standing_time", "set_record_time", "_id", "address"};
 
 
     public Location(Context context) {
         mContext = context;
         resolver = context.getContentResolver();
+        locationDb = new StandingDBHelper(mContext);
     }
 
     public void insertLocation(long timeSpentInMinute, long startTime, long endTime, int timeSet, Double latitude, Double longitude, String address){
@@ -49,15 +55,12 @@ public class Location{
     }
 
     public List getLocationDataByDate(){
-        StandingDBHelper locationDb = new StandingDBHelper(mContext);
         List<ParentObject> parentObjects = new ArrayList<>();
-        ArrayList<String> dates = locationDb.getUniqueDates();
+        ArrayList<String> dates = getUniqueDates();
         for (String date : dates) {
-            String[] projection = new String[]{"coord_lat", "coord_long", "date",
-                    "start_time", "stop_time", "standing_time", "set_record_time", "_id", "address"};
             String[] selectionDate = {date};
             Cursor cursor1 = resolver.query(StandingContract.StandingEntry.CONTENT_URI, projection, "date = ? ", selectionDate, null);
-            LocationByDate dateCount = new LocationByDate();
+            LocationData dateCount = new LocationData();
             dateCount.date = date;
             if(cursor1.moveToFirst()) {
                 do {
@@ -69,16 +72,13 @@ public class Location{
         return parentObjects;
     }
 
-    public List getLocationData(){
-        StandingDBHelper locationDb = new StandingDBHelper(mContext);
+    public List getLocationDataLocation(){
         List<ParentObject> parentObjects = new ArrayList<>();
-        ArrayList<String> locations = locationDb.getUniquelocation();
+        ArrayList<String> locations = getUniquelocation();
         for (String location : locations) {
-            String[] projection = new String[]{"coord_lat", "coord_long", "date",
-                    "start_time", "stop_time", "standing_time", "set_record_time", "_id", "address"};
             String[] selectionLocations = {location};
             Cursor cursor1 = resolver.query(StandingContract.StandingEntry.CONTENT_URI, projection, "address = ? ", selectionLocations, null);
-            LocationByDate dateCount = new LocationByDate();
+            LocationData dateCount = new LocationData();
             dateCount.date = location;
             if(cursor1.moveToFirst()) {
                 do {
@@ -107,12 +107,6 @@ public class Location{
         return longLat;
     }
 
-    public Cursor getLocation(){
-        String[] projection = new String[]{"DISTINCT date", "coord_lat", "coord_long",
-                "start_time", "stop_time", "standing_time", "set_record_time", "_id"};
-        return resolver.query(StandingContract.StandingEntry.CONTENT_URI, projection, null, null, null);
-    }
-
     private String getTimeInMunitesAndSeconds(int timeSpent, boolean isSpent){
         int timeInMunites = timeSpent/60;
         int timeInSeconds = timeSpent%60;
@@ -120,6 +114,38 @@ public class Location{
             return "Spent " + timeInMunites + " munites : " + timeInSeconds + " second";
         else
             return "Set Time " + timeInMunites + " munites : " + timeInSeconds + " second";
+    }
+
+    private ArrayList<String> getUniqueDates() {
+        ArrayList dates = new ArrayList<String>();
+        SQLiteDatabase db = locationDb.getReadableDatabase();
+        try {
+            Cursor cursor = db.query(true, StandingContract.StandingEntry.TABLE_NAME, new String[]{StandingContract.StandingEntry.COLUMN_DATE}, null, null, StandingContract.StandingEntry.COLUMN_DATE, null, null, null);
+            while (cursor.moveToNext()) {
+                dates.add(cursor.getString(cursor.getColumnIndex(StandingContract.StandingEntry.COLUMN_DATE)));
+                Log.v("TAG", cursor.getString(cursor.getColumnIndex(StandingContract.StandingEntry.COLUMN_DATE)));
+            }
+            cursor.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return dates;
+    }
+
+    private ArrayList<String> getUniquelocation() {
+        ArrayList locations = new ArrayList<String>();
+        SQLiteDatabase db = locationDb.getReadableDatabase();
+        try {
+            Cursor cursor = db.query(true, StandingContract.StandingEntry.TABLE_NAME, new String[]{StandingContract.StandingEntry.COLUMN_ADDRESS}, null, null, StandingContract.StandingEntry.COLUMN_ADDRESS, null, null, null);
+            while (cursor.moveToNext()) {
+                locations.add(cursor.getString(cursor.getColumnIndex(StandingContract.StandingEntry.COLUMN_ADDRESS)));
+                Log.v("TAG", cursor.getString(cursor.getColumnIndex(StandingContract.StandingEntry.COLUMN_ADDRESS)));
+            }
+            cursor.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return locations;
     }
 
 }
