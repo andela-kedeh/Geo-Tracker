@@ -11,10 +11,8 @@ import android.preference.PreferenceManager;
 public class TimerSettings {
     private static int DEFAULT_TIME = 300;
     private SharedPreferences sharedPref;
-    private Context activity;
 
     public TimerSettings(Context activity) {
-        this.activity = activity;
         sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
     }
 

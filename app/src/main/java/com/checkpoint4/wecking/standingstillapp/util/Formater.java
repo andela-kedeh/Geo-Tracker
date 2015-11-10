@@ -10,14 +10,6 @@ import java.util.Date;
  * Created by wecking on 10/17/15.
  */
 public class Formater {
-    public static String timeFormater(long longDate){
-        Date date = new Date(longDate);
-        DateFormat formatter = new SimpleDateFormat("HH:mm aa");
-        String dateFormatted = formatter.format(longDate);
-        Log.v("TAG", (new SimpleDateFormat("K:mm").format(longDate)) + new SimpleDateFormat("HH:mm aa").format(longDate));
-
-        return dateFormatted;
-    }
 
     public static String formatDate(long longDate){
         Date date=new Date(longDate);
