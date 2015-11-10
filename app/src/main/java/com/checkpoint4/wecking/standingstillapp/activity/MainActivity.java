@@ -26,10 +26,8 @@ import com.checkpoint4.wecking.standingstillapp.adapter.LocationAdapter;
 import com.checkpoint4.wecking.standingstillapp.DataModel.Location;
 
 import android.widget.LinearLayout;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements  View.OnClickListener{
@@ -55,7 +53,6 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
         setOnClickListenner();
         loadLocationList(false);
     }
-
 
     private void initialize(){
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -125,9 +122,6 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
         }
     }
 
-
-
-
     private void startTracking() {
         try {
             if (StandingService.isRunning) {
@@ -183,7 +177,6 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
         }
 
     }
-
 
     private void showHowToUse() {
         final LayoutInflater inflater = this.getLayoutInflater();
