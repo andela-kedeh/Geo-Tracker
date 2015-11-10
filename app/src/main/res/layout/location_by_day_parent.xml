@@ -17,6 +17,16 @@
             android:padding="5dp"
             android:id="@+id/rLayout">
 
+            <ImageView
+                android:id="@+id/location_icon"
+                android:layout_width="20dp"
+                android:layout_height="15dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginRight="10dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_group_location_black"
+                android:layout_marginLeft="8dp"/>
+
             <TextView
                 android:id="@+id/date"
                 android:layout_marginLeft="40dp"

@@ -18,12 +18,37 @@
 
             <ImageView
                 android:id="@+id/location_icon"
-                android:layout_width="30dp"
-                android:layout_height="40dp"
+                android:layout_width="15dp"
+                android:layout_height="10dp"
                 android:layout_alignParentLeft="true"
                 android:layout_marginRight="10dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/map_marker"
+                android:src="@drawable/ic_merge_type_black_24dp"
+                android:layout_marginLeft="8dp"/>
+
+            <ImageView
+                android:id="@+id/clock"
+                android:layout_width="15dp"
+                android:layout_height="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginRight="10dp"
+                android:layout_below="@+id/location_icon"
+                android:scaleType="fitXY"
+                android:src="@drawable/clock_black"
+                android:layout_marginLeft="8dp"/>
+
+            <ImageView
+                android:id="@+id/location"
+                android:layout_width="15dp"
+                android:layout_height="10dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="33dp"
+                android:layout_alignLeft="@+id/longLat"
+                android:layout_below="@+id/clock"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_location_marker"
                 android:layout_marginLeft="8dp"/>
 
             <TextView
