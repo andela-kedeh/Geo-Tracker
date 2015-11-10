@@ -43,7 +43,7 @@ public class Location{
 
         values.put(StandingContract.StandingEntry.COLUMN_DATE, Formater.formatDate(time));
         values.put(StandingContract.StandingEntry.COLUMN_START_TIME, new SimpleDateFormat("K:mm aa").format(startTime));
-        values.put(StandingContract.StandingEntry.COLUMN_STOP_TIME, Formater.timeFormater(endTime));
+        values.put(StandingContract.StandingEntry.COLUMN_STOP_TIME, new SimpleDateFormat("K:mm aa").format(endTime));
         values.put(StandingContract.StandingEntry.COLUMN_STANDING_TIME, timeSpentInMinute);
         values.put(StandingContract.StandingEntry.COLUMN_SET_RECORD_TIME, timeSet);
 

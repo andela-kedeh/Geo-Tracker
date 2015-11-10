@@ -113,9 +113,6 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
             case R.id.view_headline:
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 break;
-            case R.id.settings:
-                showMenu(v);
-                break;
             case R.id.how_to_use:
                 showHowToUse();
                 break;
@@ -128,24 +125,7 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
         }
     }
 
-    public void showMenu(View v) {
-        PopupMenu popup = new PopupMenu(this, v);
-        popup.inflate(R.menu.settings);
-        // Force icons to show
-        Object menuHelper;
-        Class[] argTypes;
-        try {
-            Field fMenuHelper = PopupMenu.class.getDeclaredField("mPopup");
-            fMenuHelper.setAccessible(true);
-            menuHelper = fMenuHelper.get(popup);
-            argTypes = new Class[] { boolean.class };
-            menuHelper.getClass().getDeclaredMethod("setForceShowIcon", argTypes).invoke(menuHelper, true);
-        } catch (Exception e) {
-            popup.show();
-            return;
-        }
-        popup.show();
-    }
+
 
 
     private void startTracking() {
