@@ -26,17 +26,19 @@ public final class Constants {
     public static final String RECEIVER = PACKAGE_NAME + ".StandingService";
 
     public static CircleTimerView circularTimerView;
-    public static TimerSettings timerSettings;
+    public static boolean isMoving = false;
 
     public static String getLocationAddress(Double longitude, Double latitude, int addressId, Context context){
         Geocoder gcd = new Geocoder(context.getApplicationContext(), Locale.getDefault());
-        List<Address> addresses = null;
+        String address = null;
         try {
+            List<Address> addresses = null;
             addresses = gcd.getFromLocation(latitude, longitude, 1);
+             address = addresses.get(0).getAddressLine(addressId).toString();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return addresses.get(0).getAddressLine(addressId).toString();
+        return address;
     }
 
 
