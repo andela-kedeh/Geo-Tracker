@@ -99,10 +99,10 @@ public class Location{
             locationChildData.address = cursor1.getString(cursor1.getColumnIndex("date"));
         }
         locationChildData.longLat = ("Latitude " + cursor1.getString(cursor1.getColumnIndex("coord_lat")) + " Longitude " + cursor1.getString(cursor1.getColumnIndex("coord_long")));
-        locationChildData.timeSpent = (getTimeInMunitesAndSeconds(Integer.parseInt(cursor1.getString(cursor1.getColumnIndex("standing_time")))));
+        locationChildData.timeSpent = (getTimeInMunitesAndSeconds(Integer.parseInt(cursor1.getString(cursor1.getColumnIndex("standing_time"))), true));
 
         locationChildData.interval = ("By " + cursor1.getString(cursor1.getColumnIndex("start_time")));
-        locationChildData.setTime = getTimeInMunitesAndSeconds(Integer.parseInt(cursor1.getString(cursor1.getColumnIndex("set_record_time"))));
+        locationChildData.setTime = getTimeInMunitesAndSeconds(Integer.parseInt(cursor1.getString(cursor1.getColumnIndex("set_record_time"))), false);
         longLat.add(locationChildData);
         return longLat;
     }
@@ -113,10 +113,13 @@ public class Location{
         return resolver.query(StandingContract.StandingEntry.CONTENT_URI, projection, null, null, null);
     }
 
-    private String getTimeInMunitesAndSeconds(int timeSpent){
+    private String getTimeInMunitesAndSeconds(int timeSpent, boolean isSpent){
         int timeInMunites = timeSpent/60;
         int timeInSeconds = timeSpent%60;
-        return "Spent " + timeInMunites + " munites : " + timeInSeconds + " second";
+        if(isSpent)
+            return "Spent " + timeInMunites + " munites : " + timeInSeconds + " second";
+        else
+            return "Set Time " + timeInMunites + " munites : " + timeInSeconds + " second";
     }
 
 }
