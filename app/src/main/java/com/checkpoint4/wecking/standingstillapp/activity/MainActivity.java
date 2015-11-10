@@ -3,9 +3,6 @@ package com.checkpoint4.wecking.standingstillapp.activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
@@ -48,7 +45,6 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setVersionLayout();
         initialize();
         setOnClickListenner();
         loadLocationList(false);
@@ -91,14 +87,6 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
         adapter.setCustomParentAnimationViewId(R.id.parent_list_item_expand_arrow);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.setAdapter(adapter);
-    }
-
-    private void setVersionLayout(){
-        if(Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP_MR1 || Build.VERSION.SDK_INT == Build.VERSION_CODES.M){
-            AppBarLayout toolbar = (AppBarLayout) findViewById(R.id.appbar);
-            CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams)toolbar.getLayoutParams();
-            params.setMargins(0, 70, 0, 0);
-        }
     }
 
     @Override
