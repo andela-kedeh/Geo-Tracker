@@ -191,9 +191,13 @@ public class StandingService extends Service  implements SensorEventListener {
     }
 
     private String getAddress(Double longitude, Double latitude){
-        return Constants.getLocationAddress(longitude, latitude, 0, this) +
-                " " + Constants.getLocationAddress(longitude, latitude, 1, this) +
-                " " +Constants.getLocationAddress(longitude, latitude, 2, this);
+        if(Constants.getLocationAddress(longitude, latitude, 0, this) == null) {
+            return "UNKNOW ADDRESS";
+        }else {
+            return Constants.getLocationAddress(longitude, latitude, 0, this) +
+                    " " + Constants.getLocationAddress(longitude, latitude, 1, this) +
+                    " " + Constants.getLocationAddress(longitude, latitude, 2, this);
+        }
     }
 
 }

@@ -7,10 +7,10 @@ import android.os.Build;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,7 +22,7 @@ import com.checkpoint4.wecking.standingstillapp.LocationServices.Constants;
 import com.checkpoint4.wecking.standingstillapp.LocationServices.StandingService;
 import com.checkpoint4.wecking.standingstillapp.R;
 import com.checkpoint4.wecking.standingstillapp.ApplicationComponent.CircleTimerView;
-import com.checkpoint4.wecking.standingstillapp.adapter.LocationByDateAdapter;
+import com.checkpoint4.wecking.standingstillapp.adapter.LocationAdapter;
 import com.checkpoint4.wecking.standingstillapp.DataModel.Location;
 
 import android.widget.LinearLayout;
@@ -30,13 +30,11 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.List;
 
+public class MainActivity extends AppCompatActivity implements  View.OnClickListener, CircleTimerView.CircleTimerListener{
 
-public class MapsActivity extends FragmentActivity implements  View.OnClickListener, CircleTimerView.CircleTimerListener{
-
-    private String TAG = "MapsActivity";
+    private String TAG = "MainActivity";
     private DrawerLayout mDrawerLayout;
     private ImageView headline;
     private TextView stracking_status;
@@ -90,7 +88,7 @@ public class MapsActivity extends FragmentActivity implements  View.OnClickListe
         else {
             locationData = location.getLocationData();
         }
-        LocationByDateAdapter adapter = new LocationByDateAdapter(MapsActivity.this, locationData);
+        LocationAdapter adapter = new LocationAdapter(MainActivity.this, locationData);
         adapter.setParentClickableViewAnimationDefaultDuration();
         adapter.setParentAndIconExpandOnClick(true);
         adapter.setCustomParentAnimationViewId(R.id.parent_list_item_expand_arrow);

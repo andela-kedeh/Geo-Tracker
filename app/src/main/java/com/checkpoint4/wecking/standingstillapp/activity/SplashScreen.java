@@ -1,19 +1,12 @@
 package com.checkpoint4.wecking.standingstillapp.activity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.checkpoint4.wecking.standingstillapp.R;
 
@@ -46,7 +39,7 @@ public class SplashScreen extends AppCompatActivity{
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } finally {
-                    Intent i = new Intent(SplashScreen.this, MapsActivity.class);
+                    Intent i = new Intent(SplashScreen.this, MainActivity.class);
                     startActivity(i);
                 }
             }
