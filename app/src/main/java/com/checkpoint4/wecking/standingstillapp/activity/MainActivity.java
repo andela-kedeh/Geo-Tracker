@@ -8,8 +8,6 @@ import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,13 +17,9 @@ import com.checkpoint4.wecking.standingstillapp.LocationServices.Constants;
 import com.checkpoint4.wecking.standingstillapp.LocationServices.StandingService;
 import com.checkpoint4.wecking.standingstillapp.R;
 import com.checkpoint4.wecking.standingstillapp.ApplicationComponent.CircleTimerView;
-import com.checkpoint4.wecking.standingstillapp.adapter.LocationAdapter;
-import com.checkpoint4.wecking.standingstillapp.DataModel.Location;
 
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements  View.OnClickListener{
 
@@ -33,11 +27,9 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
     private DrawerLayout mDrawerLayout;
     private ImageView headline;
     private TextView stracking_status;
-    private Location location;
     private LinearLayout Start_tracking;
     private NavigationView navigationView;
     private CircleTimerView circularTimerView;
-    private RecyclerView recyclerView;
     private TextView how_to_use;
     private ImageView start_icon;
 
@@ -47,7 +39,6 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
         setContentView(R.layout.activity_main);
         initialize();
         setOnClickListenner();
-        loadLocationList(false);
     }
 
     private void initialize(){
@@ -56,7 +47,6 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
         navigationView = (NavigationView) findViewById(R.id.nav_items);
         setupDrawerContent(navigationView);
         circularTimerView = (CircleTimerView) findViewById(R.id.circularTimerView);
-        recyclerView = (RecyclerView) findViewById(R.id.myRecyclerView);
         Start_tracking = (LinearLayout) findViewById(R.id.Start_tracking);
         stracking_status = (TextView) findViewById(R.id.stracking_status);
         how_to_use = (TextView) findViewById(R.id.how_to_use);
@@ -65,28 +55,12 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
 
     private void setOnClickListenner(){
         headline.setOnClickListener(this);
-        location = new Location(this);
         circularTimerView.setOnClickListener(this);
         Constants.circularTimerView = circularTimerView;
         Start_tracking.setOnClickListener(this);
         stracking_status.setOnClickListener(this);
         how_to_use.setOnClickListener(this);
         start_icon.setOnClickListener(this);
-    }
-
-    private void loadLocationList(boolean isDate) {
-        List locationData = null;
-        if(isDate)
-            locationData = location.getLocationDataByDate();
-        else {
-            locationData = location.getLocationDataLocation();
-        }
-        LocationAdapter adapter = new LocationAdapter(MainActivity.this, locationData);
-        adapter.setParentClickableViewAnimationDefaultDuration();
-        adapter.setParentAndIconExpandOnClick(true);
-        adapter.setCustomParentAnimationViewId(R.id.parent_list_item_expand_arrow);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        recyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -99,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 break;
             case R.id.how_to_use:
-                showHowToUse();
+                showHelpToUse();
                 break;
             case R.id.start_icon:
                 startTracking();
@@ -157,16 +131,23 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
         // position
         switch (menuItem.getItemId()) {
             case R.id.byDay:
-                loadLocationList(true);
+                Intent i = new Intent(MainActivity.this, ListLocation.class);
+                i.putExtra("isDate", true);
+                startActivity(i);
                 break;
             case R.id.byLocation:
-                loadLocationList(false);
+                Intent intent = new Intent(MainActivity.this, ListLocation.class);
+                intent.putExtra("isDate", false);
+                startActivity(intent);
+                break;
+            case R.id.help:
+                showHelpToUse();
                 break;
         }
 
     }
 
-    private void showHowToUse() {
+    private void showHelpToUse() {
         final LayoutInflater inflater = this.getLayoutInflater();
         View view = inflater.inflate(R.layout.how_to_use, null);
         final AlertDialog.Builder builder = new AlertDialog.Builder(this).setView(view);

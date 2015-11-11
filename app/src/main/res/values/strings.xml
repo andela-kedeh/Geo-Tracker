@@ -10,4 +10,8 @@
 
     <string name="view_tracking_history">To view tracking history click on the navigation bar at the top right corner.
                                             Tracking history is sorted by date and location</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_list_location_by_date">Location By Date</string>
 </resources>
