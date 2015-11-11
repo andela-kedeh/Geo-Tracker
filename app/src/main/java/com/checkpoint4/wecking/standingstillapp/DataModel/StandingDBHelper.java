@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public class StandingDBHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 9;
+    private static final int DATABASE_VERSION = 10;
 
     static final String DATABASE_NAME = "Location.db";
 
