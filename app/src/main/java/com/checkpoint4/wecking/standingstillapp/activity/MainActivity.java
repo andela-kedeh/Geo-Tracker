@@ -141,6 +141,7 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
                 startActivity(intent);
                 break;
             case R.id.help:
+                mDrawerLayout.closeDrawers();
                 showHelpToUse();
                 break;
         }
