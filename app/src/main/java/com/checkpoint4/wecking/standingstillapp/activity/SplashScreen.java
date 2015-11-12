@@ -46,5 +46,10 @@ public class SplashScreen extends AppCompatActivity{
         timerThread.start();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
+    }
 }
 
