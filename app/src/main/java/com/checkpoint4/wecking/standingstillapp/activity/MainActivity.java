@@ -1,18 +1,16 @@
 package com.checkpoint4.wecking.standingstillapp.activity;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.checkpoint4.wecking.standingstillapp.ApplicationComponent.HelpDialog;
 import com.checkpoint4.wecking.standingstillapp.LocationServices.Constants;
 import com.checkpoint4.wecking.standingstillapp.LocationServices.StandingService;
 import com.checkpoint4.wecking.standingstillapp.R;
@@ -23,7 +21,6 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements  View.OnClickListener{
 
-    private String TAG = "MainActivity";
     private DrawerLayout mDrawerLayout;
     private ImageView headline;
     private TextView stracking_status;
@@ -103,6 +100,10 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
     @Override
     public void onBackPressed() {
         mDrawerLayout.closeDrawers();
+        Intent startMain = new Intent(Intent.ACTION_MAIN);
+        startMain.addCategory(Intent.CATEGORY_HOME);
+        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(startMain);
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
@@ -117,8 +118,6 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
     }
 
     private void selectDrawerItem(MenuItem menuItem) {
-        // Create a new fragment and specify the planet to show based on
-        // position
         switch (menuItem.getItemId()) {
             case R.id.byDay:
                 startLocationListing(true);
@@ -128,30 +127,15 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
                 break;
             case R.id.help:
                 mDrawerLayout.closeDrawers();
-                showHelpToUse();
+                new HelpDialog(this).showHelpToUse();
                 break;
         }
-
     }
 
     private void startLocationListing(boolean isDate){
         Intent intent = new Intent(MainActivity.this, ListLocation.class);
         intent.putExtra("isDate", isDate);
         startActivity(intent);
-    }
-
-    private void showHelpToUse() {
-        final LayoutInflater inflater = this.getLayoutInflater();
-        View view = inflater.inflate(R.layout.how_to_use, null);
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this).setView(view);
-        builder.setNegativeButton("Close", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
-        }).setTitle("HOW IT WORKS");
-
-        builder.show();
     }
 
 }
