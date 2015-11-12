@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
     private LinearLayout Start_tracking;
     private NavigationView navigationView;
     private CircleTimerView circularTimerView;
-    private TextView how_to_use;
     private ImageView start_icon;
 
     @Override
@@ -49,7 +48,6 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
         circularTimerView = (CircleTimerView) findViewById(R.id.circularTimerView);
         Start_tracking = (LinearLayout) findViewById(R.id.Start_tracking);
         stracking_status = (TextView) findViewById(R.id.stracking_status);
-        how_to_use = (TextView) findViewById(R.id.how_to_use);
         start_icon = (ImageView) findViewById(R.id.start_icon);
     }
 
@@ -59,7 +57,6 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
         Constants.circularTimerView = circularTimerView;
         Start_tracking.setOnClickListener(this);
         stracking_status.setOnClickListener(this);
-        how_to_use.setOnClickListener(this);
         start_icon.setOnClickListener(this);
     }
 
@@ -67,19 +64,12 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.Start_tracking:
+            case R.id.start_icon:
+            case R.id.stracking_status:
                 startTracking();
                 break;
             case R.id.view_headline:
                 mDrawerLayout.openDrawer(GravityCompat.START);
-                break;
-            case R.id.how_to_use:
-                showHelpToUse();
-                break;
-            case R.id.start_icon:
-                startTracking();
-                break;
-            case R.id.stracking_status:
-                startTracking();
                 break;
         }
     }
@@ -96,14 +86,14 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
         }
     }
 
-    public void pause(){
+    private void pause(){
         stopService(new Intent(getBaseContext(), StandingService.class));
         stracking_status.setText("Start Tracking");
         Start_tracking.setBackground(getResources().getDrawable(R.drawable.start_button_background));
         circularTimerView.pauseTimer();
     }
 
-    public void start(){
+    private void start(){
         startService(new Intent(getBaseContext(), StandingService.class));
         stracking_status.setText("Stop Tracking");
         Start_tracking.setBackground(getResources().getDrawable(R.drawable.stop_button_background));
@@ -126,19 +116,15 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
                 });
     }
 
-    public void selectDrawerItem(MenuItem menuItem) {
+    private void selectDrawerItem(MenuItem menuItem) {
         // Create a new fragment and specify the planet to show based on
         // position
         switch (menuItem.getItemId()) {
             case R.id.byDay:
-                Intent i = new Intent(MainActivity.this, ListLocation.class);
-                i.putExtra("isDate", true);
-                startActivity(i);
+                startLocationListing(true);
                 break;
             case R.id.byLocation:
-                Intent intent = new Intent(MainActivity.this, ListLocation.class);
-                intent.putExtra("isDate", false);
-                startActivity(intent);
+                startLocationListing(false);
                 break;
             case R.id.help:
                 mDrawerLayout.closeDrawers();
@@ -146,6 +132,12 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
                 break;
         }
 
+    }
+
+    private void startLocationListing(boolean isDate){
+        Intent intent = new Intent(MainActivity.this, ListLocation.class);
+        intent.putExtra("isDate", isDate);
+        startActivity(intent);
     }
 
     private void showHelpToUse() {

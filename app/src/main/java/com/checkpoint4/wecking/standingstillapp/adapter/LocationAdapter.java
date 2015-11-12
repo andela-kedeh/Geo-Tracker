@@ -50,10 +50,10 @@ public class LocationAdapter extends ExpandableRecyclerAdapter<LocationViewHolde
     public void onBindChildViewHolder(LocationChildViewHolder locationChildViewHolder, int i, Object childObject) {
         ArrayList child = (ArrayList) childObject;
         LocationChildData locationChildData = (LocationChildData) child.get(0);
-        locationChildViewHolder.lonLat.setText(locationChildData.longLat);
-        locationChildViewHolder.timeSpent.setText(locationChildData.timeSpent);
-        locationChildViewHolder.interval.setText(locationChildData.interval);
-        locationChildViewHolder.address.setText(locationChildData.address);
-        locationChildViewHolder.setTime.setText(locationChildData.setTime);
+        locationChildViewHolder.lonLat.setText(locationChildData.getLongLat());
+        locationChildViewHolder.timeSpent.setText(locationChildData.getTimeSpent());
+        locationChildViewHolder.interval.setText(locationChildData.getInterval());
+        locationChildViewHolder.address.setText(locationChildData.getAddress());
+        locationChildViewHolder.setTime.setText(locationChildData.getSetTime());
     }
 }

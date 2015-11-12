@@ -94,15 +94,15 @@ public class Location{
         ArrayList longLat = new ArrayList<String>();
         LocationChildData locationChildData = new LocationChildData();
         if(isDate) {
-            locationChildData.address = cursor1.getString(cursor1.getColumnIndex("address"));
+            locationChildData.setAddress(cursor1.getString(cursor1.getColumnIndex("address")));
         }else {
-            locationChildData.address = cursor1.getString(cursor1.getColumnIndex("date"));
+            locationChildData.setAddress(cursor1.getString(cursor1.getColumnIndex("date")));
         }
-        locationChildData.longLat = ("Latitude " + cursor1.getString(cursor1.getColumnIndex("coord_lat")) + " Longitude " + cursor1.getString(cursor1.getColumnIndex("coord_long")));
-        locationChildData.timeSpent = (getTimeInMunitesAndSeconds(Integer.parseInt(cursor1.getString(cursor1.getColumnIndex("standing_time"))), true));
+        locationChildData.setLongLat(("Latitude " + cursor1.getString(cursor1.getColumnIndex("coord_lat")) + " Longitude " + cursor1.getString(cursor1.getColumnIndex("coord_long"))));
+        locationChildData.setTimeSpent((getTimeInMunitesAndSeconds(Integer.parseInt(cursor1.getString(cursor1.getColumnIndex("standing_time"))), true)));
 
-        locationChildData.interval = ("By " + cursor1.getString(cursor1.getColumnIndex("start_time")));
-        locationChildData.setTime = getTimeInMunitesAndSeconds(Integer.parseInt(cursor1.getString(cursor1.getColumnIndex("set_record_time"))), false);
+        locationChildData.setInterval(("By " + cursor1.getString(cursor1.getColumnIndex("start_time"))));
+        locationChildData.setSetTime(getTimeInMunitesAndSeconds(Integer.parseInt(cursor1.getString(cursor1.getColumnIndex("set_record_time"))), false));
         longLat.add(locationChildData);
         return longLat;
     }
