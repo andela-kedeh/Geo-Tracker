@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import com.checkpoint4.wecking.standingstillapp.ApplicationComponent.HelpDialog;
 import com.checkpoint4.wecking.standingstillapp.LocationServices.Constants;
 import com.checkpoint4.wecking.standingstillapp.LocationServices.StandingService;
+import com.checkpoint4.wecking.standingstillapp.ObjectFactory.ActivityHolder;
+import com.checkpoint4.wecking.standingstillapp.ObjectFactory.ObjectClass;
 import com.checkpoint4.wecking.standingstillapp.R;
 import com.checkpoint4.wecking.standingstillapp.ApplicationComponent.CircleTimerView;
 
@@ -127,7 +129,8 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
                 break;
             case R.id.help:
                 mDrawerLayout.closeDrawers();
-                new HelpDialog(this).showHelpToUse();
+                HelpDialog object = (HelpDialog) new ObjectClass().getObject("HelpDialog");
+                object.showHelpToUse();
                 break;
         }
     }
@@ -136,6 +139,18 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
         Intent intent = new Intent(MainActivity.this, ListLocation.class);
         intent.putExtra("isDate", isDate);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onPause() {
+        ActivityHolder.setActivity(null);
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        ActivityHolder.setActivity(this);
+        super.onResume();
     }
 
 }

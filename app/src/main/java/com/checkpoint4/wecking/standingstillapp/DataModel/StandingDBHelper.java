@@ -6,12 +6,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.checkpoint4.wecking.standingstillapp.ObjectFactory.ObjectHolder;
+
 import java.util.ArrayList;
 
 /**
  * Created by wecking on 10/6/15.
  */
-public class StandingDBHelper extends SQLiteOpenHelper {
+public class StandingDBHelper extends SQLiteOpenHelper implements ObjectHolder {
 
     private static final int DATABASE_VERSION = 10;
 

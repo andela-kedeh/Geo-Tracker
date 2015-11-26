@@ -1,9 +1,11 @@
 package com.checkpoint4.wecking.standingstillapp.adapter;
 
+import com.checkpoint4.wecking.standingstillapp.ObjectFactory.ObjectHolder;
+
 /**
  * Created by andela on 11/9/15.
  */
-public class LocationChildData {
+public class LocationChildData implements ObjectHolder{
     private String timeSpent = null;
     private String interval = null;
     private String longLat = null;

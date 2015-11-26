@@ -10,6 +10,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
+import com.checkpoint4.wecking.standingstillapp.ObjectFactory.ObjectClass;
 import com.checkpoint4.wecking.standingstillapp.adapter.LocationChildData;
 import com.checkpoint4.wecking.standingstillapp.util.Formater;
 
@@ -34,7 +35,7 @@ public class Location{
     public Location(Context context) {
         mContext = context;
         resolver = context.getContentResolver();
-        locationDb = new StandingDBHelper(mContext);
+        locationDb = new StandingDBHelper(context);
     }
 
     public void insertLocation(long timeSpentInMinute, long startTime, long endTime, int timeSet, Double latitude, Double longitude, String address){
@@ -60,7 +61,7 @@ public class Location{
         for (String date : dates) {
             String[] selectionDate = {date};
             Cursor cursor1 = resolver.query(StandingContract.StandingEntry.CONTENT_URI, projection, "date = ? ", selectionDate, null);
-            LocationData dateCount = new LocationData();
+            LocationData dateCount = (LocationData) new ObjectClass().getObject("LocationData");
             dateCount.date = date;
             if(cursor1.moveToFirst()) {
                 do {
@@ -78,7 +79,7 @@ public class Location{
         for (String location : locations) {
             String[] selectionLocations = {location};
             Cursor cursor1 = resolver.query(StandingContract.StandingEntry.CONTENT_URI, projection, "address = ? ", selectionLocations, null);
-            LocationData dateCount = new LocationData();
+            LocationData dateCount = (LocationData) new ObjectClass().getObject("LocationData");
             dateCount.date = location;
             if(cursor1.moveToFirst()) {
                 do {

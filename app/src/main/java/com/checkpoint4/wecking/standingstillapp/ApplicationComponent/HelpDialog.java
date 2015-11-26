@@ -6,12 +6,13 @@ import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.checkpoint4.wecking.standingstillapp.ObjectFactory.ObjectHolder;
 import com.checkpoint4.wecking.standingstillapp.R;
 
 /**
  * Created by andela on 11/12/15.
  */
-public class HelpDialog {
+public class HelpDialog implements ObjectHolder{
     private Activity activity;
 
     public HelpDialog(Activity activity) {

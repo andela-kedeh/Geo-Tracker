@@ -2,6 +2,7 @@
 package com.checkpoint4.wecking.standingstillapp.DataModel;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
@@ -11,9 +12,11 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 
+import com.checkpoint4.wecking.standingstillapp.ObjectFactory.ObjectHolder;
+
 import java.util.HashMap;
 
-public class StandingProvider extends ContentProvider {
+public class StandingProvider extends ContentProvider implements ObjectHolder {
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
     private StandingDBHelper mOpenHelper;
@@ -23,6 +26,8 @@ public class StandingProvider extends ContentProvider {
     static final int STANDING = 100;
     static final int STANDING_WITH_LOCATION = 101;
     static final int STANDING_WITH_LOCATION_AND_DATE = 102;
+
+
 
     static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);

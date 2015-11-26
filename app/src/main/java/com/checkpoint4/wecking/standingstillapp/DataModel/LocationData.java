@@ -1,6 +1,7 @@
 package com.checkpoint4.wecking.standingstillapp.DataModel;
 
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
+import com.checkpoint4.wecking.standingstillapp.ObjectFactory.ObjectHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.List;
 /**
  * Created by andela on 10/18/15.
  */
-public class LocationData implements ParentObject {
+public class LocationData implements ParentObject, ObjectHolder {
     public String date;
     private ArrayList childList;
     public String time = null;
