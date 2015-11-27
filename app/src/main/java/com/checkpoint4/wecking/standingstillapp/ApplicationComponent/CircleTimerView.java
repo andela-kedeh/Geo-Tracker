@@ -291,8 +291,8 @@ public class CircleTimerView extends View
         canvas.restore();
         // TimerNumber
         canvas.save();
-        canvas.drawText((currentTime / 60 < 10 ? "0" + currentTime / 60 : currentTime / 60) + " " + (currentTime % 60 < 10 ? "0" + currentTime % 60 : currentTime % 60), cx, cy + getFontHeight(timerNumberPaint) / 2, timerNumberPaint);
-        canvas.drawText(":", cx, cy + getFontHeight(timerNumberPaint) / 2, timerColonPaint);
+        canvas.drawText((currentTime / 60 < 10 ? "0" + currentTime / 60 : currentTime / 60) + " " , cx, cy + getFontHeight(timerNumberPaint) / 2, timerNumberPaint);
+        canvas.drawText("", cx, cy + getFontHeight(timerNumberPaint) / 2, timerColonPaint);
         canvas.restore();
         // TrackerTimeSetting Text
         canvas.save();
