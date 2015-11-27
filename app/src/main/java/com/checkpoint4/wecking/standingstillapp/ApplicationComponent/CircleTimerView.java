@@ -291,7 +291,7 @@ public class CircleTimerView extends View
         canvas.restore();
         // TimerNumber
         canvas.save();
-        canvas.drawText((currentTime / 60 < 10 ? "0" + currentTime / 60 : currentTime / 60) + " " , cx, cy + getFontHeight(timerNumberPaint) / 2, timerNumberPaint);
+        canvas.drawText((currentTime / 60 < 10 ? "0" + currentTime / 60 : currentTime / 60) + " ", cx, cy + getFontHeight(timerNumberPaint) / 2, timerNumberPaint);
         canvas.drawText("", cx, cy + getFontHeight(timerNumberPaint) / 2, timerColonPaint);
         canvas.restore();
         // TrackerTimeSetting Text
@@ -313,6 +313,7 @@ public class CircleTimerView extends View
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
+        boolean isTrue = false;
         if(!isTimerStarted) {
             switch (event.getAction() & event.getActionMasked()) {
                 case MotionEvent.ACTION_DOWN:
@@ -322,6 +323,7 @@ public class CircleTimerView extends View
                         preRadian = getRadian(event.getX(), event.getY());
                         Log.d(TAG, "In circle button");
                     }
+                    isTrue = true;
                     break;
                 case MotionEvent.ACTION_MOVE:
                     if (isInCircleButton) {
@@ -331,12 +333,13 @@ public class CircleTimerView extends View
                         } else if (preRadian < Math.toRadians(90) && temp > Math.toRadians(270)) {
                             preRadian = (float) (temp + (temp - 2 * Math.PI) - preRadian);
                         }
-                        currentRadian += (temp - preRadian);
+                            currentRadian += (temp - preRadian);
+
                         preRadian = temp;
                         if (currentRadian > 2 * Math.PI) {
                             currentRadian = (2 * Math.PI);
-                        } else if (currentRadian < 0) {
-                            currentRadian = 0.0;
+                        } else if (currentRadian < 0.20018664374947548) {
+                            currentRadian = 0.20018664374947548;
                         }
 
                         invalidate();
@@ -345,6 +348,7 @@ public class CircleTimerView extends View
                 case MotionEvent.ACTION_UP:
                     if (isInCircleButton) {
                         isInCircleButton = false;
+                        isTrue = false;
                     }
                     break;
             }
@@ -479,7 +483,6 @@ public class CircleTimerView extends View
             isStartTimer = false;
         }
     }
-
 
     public int getCurrentTime()
     {
