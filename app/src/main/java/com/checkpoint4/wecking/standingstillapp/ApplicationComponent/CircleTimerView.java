@@ -333,8 +333,7 @@ public class CircleTimerView extends View
                         } else if (preRadian < Math.toRadians(90) && temp > Math.toRadians(270)) {
                             preRadian = (float) (temp + (temp - 2 * Math.PI) - preRadian);
                         }
-                            currentRadian += (temp - preRadian);
-
+                        currentRadian += (temp - preRadian);
                         preRadian = temp;
                         if (currentRadian > 2 * Math.PI) {
                             currentRadian = (2 * Math.PI);

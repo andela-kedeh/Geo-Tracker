@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical">
+
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@color/colorPrimary"
+        android:minHeight="?attr/actionBarSize">
+
+        <ImageView
+            android:id="@+id/view_headline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/view_headline" />
+
+
+        <TextView
+            android:id="@+id/title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Geo Tracker"
+            android:textAllCaps="true"
+            android:textColor="@color/icons"
+            android:textStyle="bold" />
+
+
+    </android.support.v7.widget.Toolbar>
+
+
+    <TableLayout
+        style="@style/layout_f_w"
+        android:stretchColumns="*">
+
+        <TableRow
+            android:id="@+id/tableRow1"
+            style="@style/layout_wrap"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorPrimary">
+
+            <!-- First Tab -->
+            <LinearLayout
+                android:id="@+id/first_text"
+                style="@style/layout_f_w"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView1"
+                    style="@style/text_title"
+                    android:text="Tracker" />
+
+            </LinearLayout>
+
+            <!-- Second Tab -->
+            <LinearLayout
+                android:id="@+id/second_text"
+                style="@style/layout_f_w"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textVew1"
+                    style="@style/text_title"
+                    android:text="Location By Date" />
+
+            </LinearLayout>
+
+        </TableRow>
+    </TableLayout>
+
+    <include
+        layout="@layout/indicator"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/icons" />
+</LinearLayout>

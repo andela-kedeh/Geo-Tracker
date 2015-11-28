@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
 import com.checkpoint4.wecking.standingstillapp.ObjectFactory.ObjectClass;
+import com.checkpoint4.wecking.standingstillapp.ObjectFactory.ObjectHolder;
 import com.checkpoint4.wecking.standingstillapp.adapter.LocationChildData;
 import com.checkpoint4.wecking.standingstillapp.util.Formater;
 
@@ -22,7 +23,7 @@ import java.util.List;
 /**
  * Created by wecking on 10/13/15.
  */
-public class Location{
+public class Location implements ObjectHolder{
 
     private Context mContext;
     private StandingDBHelper locationDb;
