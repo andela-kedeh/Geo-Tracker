@@ -10,6 +10,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="30dp"
+        android:layout_marginTop="5dp"
         android:background="@color/colorPrimary"
         android:minHeight="?attr/actionBarSize">
 
@@ -41,18 +42,21 @@
         <TableRow
             android:id="@+id/tableRow1"
             style="@style/layout_wrap"
+            android:layout_marginTop="20dp"
             android:background="@color/colorPrimary">
 
             <!-- First Tab -->
             <LinearLayout
                 android:id="@+id/first_text"
                 style="@style/layout_f_w"
+                android:layout_marginLeft="5dp"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/textView1"
                     style="@style/text_title"
-                    android:text="Tracker" />
+                    android:text="Timer"
+                    android:textSize="15dp"/>
 
             </LinearLayout>
 
@@ -65,7 +69,22 @@
                 <TextView
                     android:id="@+id/textVew1"
                     style="@style/text_title"
-                    android:text="Location By Date" />
+                    android:text="Date"
+                    android:textSize="15dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/second_t"
+                style="@style/layout_f_w"
+                android:layout_marginRight="5dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textw1"
+                    style="@style/text_title"
+                    android:text="Location"
+                    android:textSize="15dp"/>
 
             </LinearLayout>
 

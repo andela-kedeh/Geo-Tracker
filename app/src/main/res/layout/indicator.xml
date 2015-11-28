@@ -2,35 +2,43 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical">
+
     <TableLayout
         style="@style/layout_f_w"
-        android:stretchColumns="*" >
+        android:stretchColumns="*">
+
         <TableRow
-            android:background="#dddddd"
             android:id="@+id/tableRow1"
-            style="@style/layout_wrap" >
-            
-             <!-- First Tab indicator -->
-	            <LinearLayout
-		        style="@style/indicator_style"
-		        android:id="@+id/first_tab" >
-	           </LinearLayout>
-	           
-	        <!-- Second Tab indicator -->
-	            <LinearLayout
-		        style="@style/indicator_style"
-		        android:id="@+id/second_tab"
-		        android:visibility="invisible" >
-	           </LinearLayout>
+            style="@style/layout_wrap"
+            android:background="#dddddd"
+            android:weightSum="9">
+
+            <!-- First Tab indicator -->
+            <LinearLayout
+                android:id="@+id/first_tab"
+                style="@style/indicator_style"
+                android:layout_weight="3"></LinearLayout>
+
+            <!-- Second Tab indicator -->
+            <LinearLayout
+                android:id="@+id/second_tab"
+                style="@style/indicator_style"
+                android:visibility="invisible"
+                android:layout_weight="3"></LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/third_tab"
+                style="@style/indicator_style"
+                android:visibility="invisible"
+                android:layout_weight="3"></LinearLayout>
         </TableRow>
     </TableLayout>
-    
+
     <!-- Bottom line -->
-    	<LinearLayout
-	    style="@style/h_line"
-	    android:orientation="vertical" >
-	  </LinearLayout>
-			           
+    <LinearLayout
+        style="@style/h_line"
+        android:orientation="vertical"></LinearLayout>
+
 
 </LinearLayout>

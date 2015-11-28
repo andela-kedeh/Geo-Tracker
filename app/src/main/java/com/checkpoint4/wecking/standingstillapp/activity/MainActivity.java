@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -62,12 +61,6 @@ public class MainActivity extends FragmentActivity implements  View.OnClickListe
         startActivity(startMain);
     }
 
-    private void startLocationListing(boolean isDate){
-        Intent intent = new Intent(MainActivity.this, ListLocation.class);
-        intent.putExtra("isDate", isDate);
-        startActivity(intent);
-    }
-
     @Override
     protected void onPause() {
         ActivityHolder.setActivity(null);
@@ -92,10 +85,10 @@ public class MainActivity extends FragmentActivity implements  View.OnClickListe
     public boolean onNavigationItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.byDay:
-                startLocationListing(true);
+                DateView();
                 break;
             case R.id.byLocation:
-                startLocationListing(false);
+                LocationView();
                 break;
             case R.id.help:
                 mDrawerLayout.closeDrawers();
@@ -116,15 +109,37 @@ public class MainActivity extends FragmentActivity implements  View.OnClickListe
         // TODO Auto-generated method stub
         switch(position){
             case 0:
-                findViewById(R.id.first_tab).setVisibility(View.VISIBLE);
-                findViewById(R.id.second_tab).setVisibility(View.INVISIBLE);
+                TimerView();
                 break;
-
             case 1:
-                findViewById(R.id.first_tab).setVisibility(View.INVISIBLE);
-                findViewById(R.id.second_tab).setVisibility(View.VISIBLE);
+                DateView();
+                break;
+            case 2:
+                LocationView();
                 break;
         }
+    }
+
+    private void TimerView() {
+        findViewById(R.id.first_tab).setVisibility(View.VISIBLE);
+        findViewById(R.id.second_tab).setVisibility(View.INVISIBLE);
+        findViewById(R.id.third_tab).setVisibility(View.INVISIBLE);
+    }
+
+    private void DateView() {
+        findViewById(R.id.first_tab).setVisibility(View.INVISIBLE);
+        findViewById(R.id.second_tab).setVisibility(View.VISIBLE);
+        findViewById(R.id.third_tab).setVisibility(View.INVISIBLE);
+        _mViewPager.setCurrentItem(1);
+        mDrawerLayout.closeDrawers();
+    }
+
+    private void LocationView() {
+        findViewById(R.id.third_tab).setVisibility(View.VISIBLE);
+        findViewById(R.id.first_tab).setVisibility(View.INVISIBLE);
+        findViewById(R.id.second_tab).setVisibility(View.INVISIBLE);
+        _mViewPager.setCurrentItem(2);
+        mDrawerLayout.closeDrawers();
     }
 
     @Override

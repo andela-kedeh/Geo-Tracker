@@ -1,14 +1,12 @@
 
-package com.checkpoint4.wecking.standingstillapp.slider;
+package com.checkpoint4.wecking.standingstillapp.fragment;
 
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +20,7 @@ import com.checkpoint4.wecking.standingstillapp.LocationServices.Constants;
 import com.checkpoint4.wecking.standingstillapp.LocationServices.StandingService;
 import com.checkpoint4.wecking.standingstillapp.ObjectFactory.ActivityHolder;
 import com.checkpoint4.wecking.standingstillapp.R;
+import com.checkpoint4.wecking.standingstillapp.fragment.ByDate;
 
 public class TimerView extends Fragment implements View.OnClickListener{
 
@@ -31,13 +30,10 @@ public class TimerView extends Fragment implements View.OnClickListener{
 	private CircleTimerView circularTimerView;
 	private ImageView start_icon;
 
-	private ViewPager _mViewPager;
-	private ViewPagerAdapter _adapter;
 	private ViewGroup root;
 
 	public static Fragment newInstance(Context context) {
-		DateLayout f = new DateLayout();
-		
+		TimerView f = new TimerView();
 		return f;
 	}
 

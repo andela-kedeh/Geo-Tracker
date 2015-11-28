@@ -20,4 +20,17 @@
         android:dividerHeight="5.0dp"
         />
 
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:text="No Location Recorded Yet"
+        android:layout_marginTop="200dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:textSize="20dp"
+        android:textColor="@color/secondary_text"
+        android:id="@+id/record_status"/>
+
 </RelativeLayout>
